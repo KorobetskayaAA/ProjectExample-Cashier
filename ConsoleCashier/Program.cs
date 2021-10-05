@@ -53,13 +53,22 @@ namespace ConsoleCashier
                 decimal itemPrice = productPrices[itemBarcode];
                 Console.WriteLine("{0} ({1})", itemName, itemPrice);
                 double itemAmount = ReadAmount();
-                decimal itemCost = Math.Truncate(itemPrice * (decimal)itemAmount);
+                decimal itemCost = Math.Truncate(itemPrice * (decimal)itemAmount * 100m) / 100m;
 
-                itemsBarcodes.Add(itemBarcode);
-                itemsNames.Add(itemName);
-                itemsPrices.Add(itemPrice);
-                itemsAmounts.Add(itemAmount);
-                itemsCosts.Add(itemCost);
+                if (itemsBarcodes.Contains(itemBarcode))
+                {
+                    int index = itemsBarcodes.IndexOf(itemBarcode);
+                    itemsAmounts[index] += itemAmount;
+                    itemsCosts[index] = Math.Truncate(itemPrice * (decimal)itemsAmounts[index] * 100m) / 100m;
+                }
+                else
+                {
+                    itemsBarcodes.Add(itemBarcode);
+                    itemsNames.Add(itemName);
+                    itemsPrices.Add(itemPrice);
+                    itemsAmounts.Add(itemAmount);
+                    itemsCosts.Add(itemCost);
+                }
 
                 Console.WriteLine(
                     "Нажмите Enter, чтобы завершить, или любую другую клавишу, чтобы продолжить."
