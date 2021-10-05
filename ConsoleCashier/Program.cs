@@ -8,10 +8,35 @@ namespace ConsoleCashier
     {
         static void Main(string[] args)
         {
-            CreateBill();
+            CreateBill(GetProductNames(), GetProductPrices());
         }
 
-        static void CreateBill()
+        static Dictionary<string, string> GetProductNames()
+        {
+            return new Dictionary<string, string>()
+            {
+                ["4634567890098"] = "Батон горчичный",
+                ["8001234567891"] = "Спагетти Италия 450г",
+                ["4609876541212"] = "Вода негаз. 0,5л",
+                ["5345738573637"] = "Томаты вес.",
+                ["1234567891234"] = "Огурцы вес.",
+            };
+        }
+
+        static Dictionary<string, decimal> GetProductPrices()
+        {
+            return new Dictionary<string, decimal>()
+            {
+                ["4634567890098"] = 37.12m,
+                ["8001234567891"] = 89.9m,
+                ["4609876541212"] = 15.6m,
+                ["5345738573637"] = 90.5m,
+                ["1234567891234"] = 75.25m,
+            };
+        }
+
+        static void CreateBill(Dictionary<string, string> productNames, 
+            Dictionary<string, decimal> productPrices)
         {
             uint number = ReadBillNumber();
             DateTime date = DateTime.Now;
@@ -23,11 +48,13 @@ namespace ConsoleCashier
             do
             {
                 Console.WriteLine("\n{0}.", itemsBarcodes.Count + 1);
-                string itemBarcode = ReadBarcode();
-                string itemName = ReadItemName();
-                decimal itemPrice = ReadPrice();
+                string itemBarcode = ReadBarcode(productNames.Keys);
+                string itemName = productNames[itemBarcode];
+                decimal itemPrice = productPrices[itemBarcode];
+                Console.WriteLine("{0} ({1})", itemName, itemPrice);
                 double itemAmount = ReadAmount();
                 decimal itemCost = Math.Truncate(itemPrice * (decimal)itemAmount);
+
                 itemsBarcodes.Add(itemBarcode);
                 itemsNames.Add(itemName);
                 itemsPrices.Add(itemPrice);
@@ -67,13 +94,7 @@ namespace ConsoleCashier
             double amount, decimal cost)
         {
             Console.WriteLine("{0} {1}", barcode, name);
-            Console.WriteLine("{0,10:#,##0.00} * {1,8:0.000} = {2,13:#,##0.00}", price, amount, cost);
-        }
-
-        static string ReadItemName()
-        {
-            Console.Write("Введите наименование товара: ");
-            return Console.ReadLine();
+            Console.WriteLine("{0,11:#,##0.00} * {1,7:0.###} = {2,13:#,##0.00}", price, amount, cost);
         }
 
         static uint ReadBillNumber()
@@ -90,31 +111,19 @@ namespace ConsoleCashier
             return number;
         }
 
-        static string ReadBarcode()
+        static string ReadBarcode(IEnumerable<string> knownBarcodes)
         {
             Console.Write("Введите штрих-код товара: ");
             string barcode;
             barcode = Console.ReadLine();
-            while (barcode.Length != 13 || !ulong.TryParse(barcode, out _))
+            while (barcode.Length != 13 || !ulong.TryParse(barcode, out _)
+                || !knownBarcodes.Contains(barcode))
             {
-                Console.Error.WriteLine("Штрих-код должен состоять из 13 цифр.");
+                Console.Error.WriteLine("Штрих-код должен состоять из 13 цифр. Указанный штрих-код не найден.");
                 Console.Write("Введите штрих-код: ");
                 barcode = Console.ReadLine();
             }
             return barcode;
-        }
-
-        static decimal ReadPrice()
-        {
-            decimal price;
-            Console.Write("Введите цену: ");
-            while (!decimal.TryParse(Console.ReadLine(), out price)
-                || price < 0 || Math.Round(price, 2) != price)
-            {
-                Console.Error.WriteLine("Цена должна быть положительным числом, до двух знаков после запятой");
-                Console.Write("Введите цену: ");
-            }
-            return price;
         }
 
         static double ReadAmount()
