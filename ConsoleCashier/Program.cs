@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleCashier
 {
@@ -11,50 +13,61 @@ namespace ConsoleCashier
 
         static void CreateBill()
         {
-            string number = ReadBillNumber();
+            uint number = ReadBillNumber();
             DateTime date = DateTime.Now;
-            int itemsCount = 0;
-            decimal sum = 0;
+            var itemsBarcodes = new List<string>();
+            var itemsNames = new List<string>();
+            var itemsPrices = new List<decimal>();
+            var itemsAmounts = new List<double>();
+            var itemsCosts = new List<decimal>();
             do
             {
-                itemsCount++;
-                Console.WriteLine();
-                Console.WriteLine(itemsCount + ".");
-                sum += ReadItem();
+                Console.WriteLine("\n{0}.", itemsBarcodes.Count + 1);
+                string itemBarcode = ReadBarcode();
+                string itemName = ReadItemName();
+                decimal itemPrice = ReadPrice();
+                double itemAmount = ReadAmount();
+                decimal itemCost = Math.Truncate(itemPrice * (decimal)itemAmount);
+                itemsBarcodes.Add(itemBarcode);
+                itemsNames.Add(itemName);
+                itemsPrices.Add(itemPrice);
+                itemsAmounts.Add(itemAmount);
+                itemsCosts.Add(itemCost);
+
                 Console.WriteLine(
-                    "Нажмите ESC, чтобы завершить, или любую другую клавишу, чтобы продолжить."
+                    "Нажмите Enter, чтобы завершить, или любую другую клавишу, чтобы продолжить."
                 );
-            } while (Console.ReadKey().Key != ConsoleKey.Escape);
+            } while (Console.ReadKey().Key != ConsoleKey.Enter);
 
-            Console.WriteLine("***********************************");
-            PrintBill(number, date, itemsCount, sum);
+            PrintBill(number, date, itemsBarcodes, itemsNames, 
+                itemsPrices, itemsAmounts, itemsCosts);
         }
 
-        static decimal ReadItem()
+        static void PrintBill(uint number, DateTime date, List<string> itemsBarcodes,
+           List<string> itemsNames, List<decimal> itemsPrices, List<double> itemsAmounts,
+           List<decimal> itemsCosts)
         {
-            string itemBarcode = ReadBarcode();
-            string itemName = ReadItemName();
-            decimal itemPrice = ReadPrice();
-            double itemAmount = ReadAmount();
-            decimal itemCost = Math.Truncate(itemPrice * (decimal)itemAmount);
-            Console.WriteLine("===");
-            PrintItem(itemBarcode, itemName, itemPrice, itemAmount, itemCost);
-            return itemCost;
-        }
-
-        static void PrintBill(string number, DateTime date, int itemsCount, decimal sum)
-        {
-            Console.WriteLine("     ЧЕК №" + number);
+            Console.Clear();
+            Console.WriteLine("       КАССОВЫЙ ЧЕК №{0:0000000000}", number);
             Console.WriteLine(date.ToLocalTime());
-            Console.WriteLine("Количество позиций: " + itemsCount);
-            Console.WriteLine("Сумма позиций: " + sum);
+            Console.WriteLine("*************************************");
+            for (int i = 0; i < itemsBarcodes.Count; i++)
+            {
+                PrintItem(itemsBarcodes[i], itemsNames[i], itemsPrices[i], itemsAmounts[i]
+                    , itemsCosts[i]);
+            }
+            Console.WriteLine("*************************************");
+            var sum = itemsCosts.Sum();
+            decimal vat = 0.2m;
+            Console.WriteLine("ИТОГ ={0,31:#,##0.00}", sum);
+            Console.WriteLine("СУММА БЕЗ НДС ={0,22:#,##0.00}", sum / (1 + vat));
         }
 
-        static void PrintItem(string barcode, string name, decimal price, 
+        static void PrintItem(string barcode, string name, decimal price,
             double amount, decimal cost)
         {
-            Console.WriteLine(barcode + " " + name);
-            Console.WriteLine("  " + price + " * " + amount + " = " + cost);
+            Console.WriteLine("{0} {1}", barcode, name);
+            Console.WriteLine("{0,10:#,##0.00} * {1,8:0.000} = {2,13:#,##0.00}", price, amount, cost);
         }
 
         static string ReadItemName()
@@ -63,16 +76,16 @@ namespace ConsoleCashier
             return Console.ReadLine();
         }
 
-        static string ReadBillNumber()
+        static uint ReadBillNumber()
         {
             Console.Write("Введите номер чека: ");
-            string number;
-            number = Console.ReadLine();
-            while (!ulong.TryParse(number, out _))
+            uint number;
+            string input = Console.ReadLine();
+            while (!uint.TryParse(input, out number))
             {
                 Console.Error.WriteLine("Номер чека должен состоять из цифр.");
                 Console.Write("Введите номер чека: ");
-                number = Console.ReadLine();
+                input = Console.ReadLine();
             }
             return number;
         }
