@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleCashier", "ConsoleCashier\ConsoleCashier.csproj", "{B35E4A65-52B7-47EE-BB98-5437CD36C2B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleCashier", "ConsoleCashier\ConsoleCashier.csproj", "{B35E4A65-52B7-47EE-BB98-5437CD36C2B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashierModel", "CashierModel\CashierModel.csproj", "{27489D74-0FAA-4988-AF64-495A93DFACAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{B35E4A65-52B7-47EE-BB98-5437CD36C2B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B35E4A65-52B7-47EE-BB98-5437CD36C2B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B35E4A65-52B7-47EE-BB98-5437CD36C2B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27489D74-0FAA-4988-AF64-495A93DFACAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27489D74-0FAA-4988-AF64-495A93DFACAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27489D74-0FAA-4988-AF64-495A93DFACAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27489D74-0FAA-4988-AF64-495A93DFACAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
