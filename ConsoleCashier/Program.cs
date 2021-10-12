@@ -71,20 +71,6 @@ namespace ConsoleCashier
                 item.Price, item.Amount, item.Cost);
         }
 
-        static uint ReadBillNumber()
-        {
-            Console.Write("Введите номер чека: ");
-            uint number;
-            string input = Console.ReadLine();
-            while (!uint.TryParse(input, out number))
-            {
-                Console.Error.WriteLine("Номер чека должен состоять из цифр.");
-                Console.Write("Введите номер чека: ");
-                input = Console.ReadLine();
-            }
-            return number;
-        }
-
         static string ReadBarcode(IEnumerable<string> knownBarcodes)
         {
             Console.Write("Введите штрих-код товара: ");
