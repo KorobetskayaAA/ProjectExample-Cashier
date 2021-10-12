@@ -16,10 +16,13 @@ namespace ConsoleCashier
             }
 
             Cashier cashier = new Cashier();
-            Bill bill = cashier.OpenNewBill();
-            FillBill(catalog, bill);
-
-            PrintBill(bill);
+            for (int i = 0; i < 3; i++)
+            {
+                Bill bill = cashier.OpenNewBill();
+                FillBill(catalog, bill);
+                PrintBill(bill);
+                Console.ReadKey();
+            }
         }
 
         static IEnumerable<Product> MockProducts => new List<Product>()
@@ -33,6 +36,8 @@ namespace ConsoleCashier
 
         static void FillBill(Catalog catalog, Bill bill)
         {
+            Console.Clear();
+            Console.WriteLine("Заполнение чека №{0:0000000000}", bill.Number);
             do
             {
                 Console.WriteLine("\n{0}.", bill.ItemsCount + 1);

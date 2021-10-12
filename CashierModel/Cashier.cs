@@ -11,7 +11,9 @@ namespace CashierModel
 
         public Bill OpenNewBill()
         {
-            return new Bill();
+            var bill = new Bill();
+            Bills.Add(bill);
+            return bill;
         }
 
         public Bill FindBill(uint number)
