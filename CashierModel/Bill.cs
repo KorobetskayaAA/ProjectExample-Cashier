@@ -17,8 +17,24 @@ namespace CashierModel
             Created = DateTime.Now;
         }
 
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(string.Format("       КАССОВЫЙ ЧЕК №{0:0000000000}\n", Number));
+            sb.Append(Created.ToLocalTime() + "\n");
+            sb.Append("*************************************\n");
+            sb.Append(string.Join("\n", items) + "\n");
+            sb.Append("*************************************\n");
+            var sum = Sum;
+            decimal vat = 0.2m;
+            sb.Append(string.Format("ИТОГ ={0,31:#,##0.00}\n", sum));
+            sb.Append(string.Format("СУММА БЕЗ НДС ={0,22:#,##0.00}", sum / (1 + vat)));
+            return sb.ToString();
+        }
+
         #region Items
-        public readonly List<Item> items = new List<Item>();
+        readonly List<Item> items = new List<Item>();
         public IEnumerable<Item> Items => items;
         public Item this[string barcode]
         {

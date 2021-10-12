@@ -19,5 +19,12 @@ namespace CashierModel
             Price = product.Price;
             Amount = amount;
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0} {1}\n{2,11:#,##0.00} * {3,7:0.###} = {4,13:#,##0.00}",
+                Barcode, Name,
+                Price, Amount, Cost);
+        }
     }
 }

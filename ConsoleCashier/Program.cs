@@ -55,25 +55,7 @@ namespace ConsoleCashier
         static void PrintBill(Bill bill)
         {
             Console.Clear();
-            Console.WriteLine("       КАССОВЫЙ ЧЕК №{0:0000000000}", bill.Number);
-            Console.WriteLine(bill.Created.ToLocalTime());
-            Console.WriteLine("*************************************");
-            for (int i = 0; i < bill.ItemsCount; i++)
-            {
-                PrintItem(bill[i]);
-            }
-            Console.WriteLine("*************************************");
-            var sum = bill.Sum;
-            decimal vat = 0.2m;
-            Console.WriteLine("ИТОГ ={0,31:#,##0.00}", sum);
-            Console.WriteLine("СУММА БЕЗ НДС ={0,22:#,##0.00}", sum / (1 + vat));
-        }
-
-        static void PrintItem(Item item)
-        {
-            Console.WriteLine("{0} {1}", item.Barcode, item.Name);
-            Console.WriteLine("{0,11:#,##0.00} * {1,7:0.###} = {2,13:#,##0.00}",
-                item.Price, item.Amount, item.Cost);
+            Console.WriteLine(bill);
         }
 
         static string ReadBarcode(IEnumerable<string> knownBarcodes)
