@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CashierModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,102 +9,66 @@ namespace ConsoleCashier
     {
         static void Main(string[] args)
         {
-            CreateBill(GetProductNames(), GetProductPrices());
-        }
-
-        static Dictionary<string, string> GetProductNames()
-        {
-            return new Dictionary<string, string>()
+            Catalog catalog = new Catalog();
+            foreach(var product in MockProducts)
             {
-                ["4634567890098"] = "Батон горчичный",
-                ["8001234567891"] = "Спагетти Италия 450г",
-                ["4609876541212"] = "Вода негаз. 0,5л",
-                ["5345738573637"] = "Томаты вес.",
-                ["1234567891234"] = "Огурцы вес.",
-            };
+                catalog.AddProduct(product);
+            }
+
+            Cashier cashier = new Cashier();
+            Bill bill = cashier.OpenNewBill();
+            FillBill(catalog, bill);
+
+            PrintBill(bill);
         }
 
-        static Dictionary<string, decimal> GetProductPrices()
+        static IEnumerable<Product> MockProducts => new List<Product>()
         {
-            return new Dictionary<string, decimal>()
-            {
-                ["4634567890098"] = 37.12m,
-                ["8001234567891"] = 89.9m,
-                ["4609876541212"] = 15.6m,
-                ["5345738573637"] = 90.5m,
-                ["1234567891234"] = 75.25m,
-            };
-        }
+            new Product("4634567890098", "Батон горчичный", 37.12m ),
+            new Product("8001234567891", "Спагетти Италия 450г", 89.9m),
+            new Product("4609876541212", "Вода негаз. 0,5л", 15.6m),
+            new Product("5345738573637", "Томаты вес.", 90.5m),
+            new Product("1234567891234", "Огурцы вес.", 75.25m),
+         };
 
-        static void CreateBill(Dictionary<string, string> productNames, 
-            Dictionary<string, decimal> productPrices)
+        static void FillBill(Catalog catalog, Bill bill)
         {
-            uint number = ReadBillNumber();
-            DateTime date = DateTime.Now;
-            var itemsBarcodes = new List<string>();
-            var itemsNames = new List<string>();
-            var itemsPrices = new List<decimal>();
-            var itemsAmounts = new List<double>();
-            var itemsCosts = new List<decimal>();
             do
             {
-                Console.WriteLine("\n{0}.", itemsBarcodes.Count + 1);
-                string itemBarcode = ReadBarcode(productNames.Keys);
-                string itemName = productNames[itemBarcode];
-                decimal itemPrice = productPrices[itemBarcode];
-                Console.WriteLine("{0} ({1})", itemName, itemPrice);
-                double itemAmount = ReadAmount();
-                decimal itemCost = Math.Truncate(itemPrice * (decimal)itemAmount * 100m) / 100m;
-
-                if (itemsBarcodes.Contains(itemBarcode))
-                {
-                    int index = itemsBarcodes.IndexOf(itemBarcode);
-                    itemsAmounts[index] += itemAmount;
-                    itemsCosts[index] = Math.Truncate(itemPrice * (decimal)itemsAmounts[index] * 100m) / 100m;
-                }
-                else
-                {
-                    itemsBarcodes.Add(itemBarcode);
-                    itemsNames.Add(itemName);
-                    itemsPrices.Add(itemPrice);
-                    itemsAmounts.Add(itemAmount);
-                    itemsCosts.Add(itemCost);
-                }
-
+                Console.WriteLine("\n{0}.", bill.ItemsCount + 1);
+                string barcode = ReadBarcode(catalog.Barcodes);
+                Product product = catalog[barcode];
+                Console.WriteLine("{0} - {1:C2}", product.Name, product.Price);
+                double amount = ReadAmount();
+                bill.AddItem(product, amount);
                 Console.WriteLine(
                     "Нажмите Enter, чтобы завершить, или любую другую клавишу, чтобы продолжить."
                 );
             } while (Console.ReadKey().Key != ConsoleKey.Enter);
-
-            PrintBill(number, date, itemsBarcodes, itemsNames, 
-                itemsPrices, itemsAmounts, itemsCosts);
         }
 
-        static void PrintBill(uint number, DateTime date, List<string> itemsBarcodes,
-           List<string> itemsNames, List<decimal> itemsPrices, List<double> itemsAmounts,
-           List<decimal> itemsCosts)
+        static void PrintBill(Bill bill)
         {
             Console.Clear();
-            Console.WriteLine("       КАССОВЫЙ ЧЕК №{0:0000000000}", number);
-            Console.WriteLine(date.ToLocalTime());
+            Console.WriteLine("       КАССОВЫЙ ЧЕК №{0:0000000000}", bill.Number);
+            Console.WriteLine(bill.Created.ToLocalTime());
             Console.WriteLine("*************************************");
-            for (int i = 0; i < itemsBarcodes.Count; i++)
+            for (int i = 0; i < bill.ItemsCount; i++)
             {
-                PrintItem(itemsBarcodes[i], itemsNames[i], itemsPrices[i], itemsAmounts[i]
-                    , itemsCosts[i]);
+                PrintItem(bill[i]);
             }
             Console.WriteLine("*************************************");
-            var sum = itemsCosts.Sum();
+            var sum = bill.Sum;
             decimal vat = 0.2m;
             Console.WriteLine("ИТОГ ={0,31:#,##0.00}", sum);
             Console.WriteLine("СУММА БЕЗ НДС ={0,22:#,##0.00}", sum / (1 + vat));
         }
 
-        static void PrintItem(string barcode, string name, decimal price,
-            double amount, decimal cost)
+        static void PrintItem(Item item)
         {
-            Console.WriteLine("{0} {1}", barcode, name);
-            Console.WriteLine("{0,11:#,##0.00} * {1,7:0.###} = {2,13:#,##0.00}", price, amount, cost);
+            Console.WriteLine("{0} {1}", item.Barcode, item.Name);
+            Console.WriteLine("{0,11:#,##0.00} * {1,7:0.###} = {2,13:#,##0.00}",
+                item.Price, item.Amount, item.Cost);
         }
 
         static uint ReadBillNumber()

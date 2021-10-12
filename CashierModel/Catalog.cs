@@ -6,25 +6,27 @@ namespace CashierModel
 {
     public class Catalog
     {
-        List<Product> Products { get; } = new List<Product>();
+        Dictionary<string, Product> Products { get; } = new Dictionary<string, Product>();
         public Product this[string barcode]
         {
-            get => Products.Find(product => product.Barcode == barcode);
+            get => Products[barcode];
         }
 
         public void AddProduct(Product product)
         {
-            Products.Add(product);
-        }
-
-        public void RemoveProduct(Product product)
-        {
-            Products.Remove(product);
+            Products.Add(product.Barcode, product);
         }
 
         public void RemoveProduct(string barcode)
         {
-            RemoveProduct(Products.Find(product => product.Barcode == barcode));
+            Products.Remove(barcode);
         }
+
+        public void RemoveProduct(Product product)
+        {
+            RemoveProduct(product.Barcode);
+        }
+
+        public IEnumerable<string> Barcodes => Products.Keys;
     }
 }

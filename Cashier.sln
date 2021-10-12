@@ -4,8 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleCashier", "ConsoleCashier\ConsoleCashier.csproj", "{B35E4A65-52B7-47EE-BB98-5437CD36C2B6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{27489D74-0FAA-4988-AF64-495A93DFACAC} = {27489D74-0FAA-4988-AF64-495A93DFACAC}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashierModel", "CashierModel\CashierModel.csproj", "{27489D74-0FAA-4988-AF64-495A93DFACAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CashierModel", "CashierModel\CashierModel.csproj", "{27489D74-0FAA-4988-AF64-495A93DFACAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
