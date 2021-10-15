@@ -63,8 +63,7 @@ namespace ConsoleCashier
             Console.Write("Введите штрих-код товара: ");
             string barcode;
             barcode = Console.ReadLine();
-            while (barcode.Length != 13 || !ulong.TryParse(barcode, out _)
-                || !knownBarcodes.Contains(barcode))
+            while (!Barcode.IsCorrect(barcode) || !knownBarcodes.Contains(barcode))
             {
                 Console.Error.WriteLine("Штрих-код должен состоять из 13 цифр. Указанный штрих-код не найден.");
                 Console.Write("Введите штрих-код: ");

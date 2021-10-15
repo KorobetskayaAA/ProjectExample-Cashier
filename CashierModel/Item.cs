@@ -6,7 +6,7 @@ namespace CashierModel
 {
     public class Item
     {
-        public string Barcode { get; }
+        public Barcode Barcode { get; }
         public string Name { get; set; }
         public decimal Price { get; set; }
         public double Amount { get; set; }

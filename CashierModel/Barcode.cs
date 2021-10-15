@@ -55,5 +55,10 @@ namespace CashierModel
         {
             return new Barcode(barcode);
         }
+
+        public static implicit operator ulong(Barcode barcode)
+        {
+            return barcode.barcode;
+        }
     }
 }

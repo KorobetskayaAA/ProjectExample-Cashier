@@ -36,7 +36,7 @@ namespace CashierModel
         #region Items
         readonly List<Item> items = new List<Item>();
         public IEnumerable<Item> Items => items;
-        public Item this[string barcode]
+        public Item this[Barcode barcode]
         {
             get => items.Find(item => item.Barcode == barcode);
         }
