@@ -9,7 +9,6 @@ namespace ConsoleCashier
     {
         public Cashier Cashier { get; } = new Cashier();
 
-
         public void FillBill(Catalog catalog)
         {
             Bill bill = Cashier.OpenNewBill();
@@ -35,6 +34,10 @@ namespace ConsoleCashier
         {
             Console.Clear();
             Console.WriteLine(bill);
+            Console.WriteLine(
+                "Нажмите любую клавишу, чтобы продолжить..."
+            );
+            Console.ReadKey();
         }
     }
 }
