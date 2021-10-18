@@ -9,18 +9,12 @@ namespace ConsoleCashier
     {
         static void Main(string[] args)
         {
-            Catalog catalog = new Catalog();
-            foreach(var product in MockProducts)
-            {
-                catalog.AddProduct(product);
-            }
+            CatalogController catalogController = new CatalogController(MockProducts);
+            CashierController cashierController = new CashierController();
 
-            Cashier cashier = new Cashier();
             for (int i = 0; i < 3; i++)
             {
-                Bill bill = cashier.OpenNewBill();
-                FillBill(catalog, bill);
-                PrintBill(bill);
+                cashierController.FillBill(catalogController.Catalog);
                 Console.ReadKey();
             }
         }
@@ -34,55 +28,5 @@ namespace ConsoleCashier
             new Product("1234567891234", "Огурцы вес.", 75.25m),
          };
 
-        static void FillBill(Catalog catalog, Bill bill)
-        {
-            Console.Clear();
-            Console.WriteLine("Заполнение чека №{0:0000000000}", bill.Number);
-            do
-            {
-                Console.WriteLine("\n{0}.", bill.ItemsCount + 1);
-                string barcode = ReadBarcode(catalog.Barcodes);
-                Product product = catalog[barcode];
-                Console.WriteLine("{0} - {1:C2}", product.Name, product.Price);
-                double amount = ReadAmount();
-                bill.AddItem(product, amount);
-                Console.WriteLine(
-                    "Нажмите Enter, чтобы завершить, или любую другую клавишу, чтобы продолжить."
-                );
-            } while (Console.ReadKey().Key != ConsoleKey.Enter);
-        }
-
-        static void PrintBill(Bill bill)
-        {
-            Console.Clear();
-            Console.WriteLine(bill);
-        }
-
-        static string ReadBarcode(IEnumerable<string> knownBarcodes)
-        {
-            Console.Write("Введите штрих-код товара: ");
-            string barcode;
-            barcode = Console.ReadLine();
-            while (!Barcode.IsCorrect(barcode) || !knownBarcodes.Contains(barcode))
-            {
-                Console.Error.WriteLine("Штрих-код должен состоять из 13 цифр. Указанный штрих-код не найден.");
-                Console.Write("Введите штрих-код: ");
-                barcode = Console.ReadLine();
-            }
-            return barcode;
-        }
-
-        static double ReadAmount()
-        {
-            double amount;
-            Console.Write("Введите количество: ");
-            while (!double.TryParse(Console.ReadLine(), out amount)
-                || amount < 0)
-            {
-                Console.Error.WriteLine("Количество должно быть положительным числом.");
-                Console.Write("Введите количество: ");
-            }
-            return amount;
-        }
     }
 }
