@@ -9,24 +9,29 @@ namespace ConsoleCashier
     {
         static void Main(string[] args)
         {
-            CatalogController catalogController = new CatalogController(MockProducts);
+            CatalogController catalogController = new CatalogController(MocksFabric.MockProducts);
             CashierController cashierController = new CashierController();
 
-            for (int i = 0; i < 3; i++)
-            {
-                cashierController.FillBill(catalogController.Catalog);
-                Console.ReadKey();
-            }
+            while (MainMenuInput(catalogController, cashierController));
         }
 
-        static IEnumerable<Product> MockProducts => new List<Product>()
-        {
-            new Product("4634567890098", "Батон горчичный", 37.12m ),
-            new Product("8001234567891", "Спагетти Италия 450г", 89.9m),
-            new Product("4609876541212", "Вода негаз. 0,5л", 15.6m),
-            new Product("5345738573637", "Томаты вес.", 90.5m),
-            new Product("1234567891234", "Огурцы вес.", 75.25m),
-         };
+        static readonly Menu MainMenu = new Menu(new[] { 
+            new MenuItem(ConsoleKey.F1, "Новый чек"),
+            new MenuItem(ConsoleKey.Escape, "Выход"),
+        });
 
+        static bool MainMenuInput(CatalogController catalogController, CashierController cashierController)
+        {
+            Console.Clear();
+            MainMenu.Print();
+            switch (Console.ReadKey().Key)
+            {
+                case ConsoleKey.F1:
+                    cashierController.FillBill(catalogController.Catalog);
+                    break;
+                case ConsoleKey.Escape: return false;
+            }
+            return true;
+        }
     }
 }
