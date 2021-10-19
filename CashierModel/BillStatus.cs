@@ -10,4 +10,15 @@ namespace CashierModel
         Active,
         Cancelled
     }
+
+    public static class BillStatusRus
+    {
+        public static readonly Dictionary<BillStatus, string> Names =
+            new Dictionary<BillStatus, string>()
+            {
+                { BillStatus.Editing, "Открыт" },
+                { BillStatus.Active, "Закрыт" },
+                { BillStatus.Cancelled, "Отмена" },
+            };
+    }
 }

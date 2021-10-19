@@ -28,5 +28,28 @@ namespace ConsoleCashier
                 Catalog.AddProduct(product);
             }
         }
+
+        public void CreateProduct()
+        {
+            Console.Clear();
+            Catalog.AddProduct(new Product(
+                InputValidator.ReadNewBarcode(Catalog.Barcodes),
+                InputValidator.ReadProductName(),
+                InputValidator.ReadPrice()
+            ));
+        }
+
+        public void PrintAllProducts()
+        {
+            Console.WriteLine("{0,-13} {1,-35} {2,-10}",
+                   "Штрих-код", "Название", "Цена");
+            foreach (var product in Catalog.ProductsList)
+            {
+                Console.WriteLine("{0,13} {1,35} {2,10}",
+                    product.Barcode,
+                    product.Name,
+                    product.Price);
+            }
+        }
     }
 }

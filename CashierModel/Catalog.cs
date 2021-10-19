@@ -8,6 +8,8 @@ namespace CashierModel
     public class Catalog
     {
         Dictionary<Barcode, Product> Products { get; } = new Dictionary<Barcode, Product>();
+        public IEnumerable<Product> ProductsList => Products.Values;
+
         public Product this[Barcode barcode]
         {
             get => Products[barcode];

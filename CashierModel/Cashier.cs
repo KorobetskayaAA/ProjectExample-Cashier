@@ -7,23 +7,24 @@ namespace CashierModel
 {
     public class Cashier
     {
-        List<Bill> Bills { get; } = new List<Bill>();
+        List<Bill> bills = new List<Bill>();
+        public IEnumerable<Bill> Bills => bills;
 
         public Bill OpenNewBill()
         {
             var bill = new Bill();
-            Bills.Add(bill);
+            bills.Add(bill);
             return bill;
         }
 
         public Bill FindBill(uint number)
         {
-            return Bills.Find(bill => bill.Number == number);
+            return bills.Find(bill => bill.Number == number);
         }
 
         public IEnumerable<Bill> FindBills(BillStatus status)
         {
-            return Bills.Where(bill => bill.Status == status);
+            return bills.Where(bill => bill.Status == status);
         }
     }
 }

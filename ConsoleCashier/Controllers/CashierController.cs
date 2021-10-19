@@ -39,5 +39,18 @@ namespace ConsoleCashier
             );
             Console.ReadKey();
         }
+
+        public void PrintAllBills()
+        {
+            Console.WriteLine("{0,-10} {1,-20} {2,-7} {3,-12} {4,-8}",
+                   "№", "Дата создания", "Кол-во", "Сумма", "Статус");
+            foreach (var bill in Cashier.Bills)
+            {
+                Console.WriteLine("{0,10:0000000000} {1,20} {2,7} {3,12:#,##0.00} {4,8}",
+                    bill.Number, bill.Created, 
+                    bill.ItemsCount, bill.Sum, 
+                    BillStatusRus.Names[bill.Status]);
+            }
+        }
     }
 }
