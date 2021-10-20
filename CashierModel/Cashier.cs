@@ -7,8 +7,20 @@ namespace CashierModel
 {
     public class Cashier
     {
-        List<Bill> bills = new List<Bill>();
+        List<Bill> bills;
         public IEnumerable<Bill> Bills => bills;
+
+        public Cashier(List<Bill> bills = null)
+        {
+            if (bills != null)
+            {
+                this.bills = bills;
+            }
+            else
+            {
+                this.bills = new List<Bill>();
+            }
+        }
 
         public Bill OpenNewBill()
         {

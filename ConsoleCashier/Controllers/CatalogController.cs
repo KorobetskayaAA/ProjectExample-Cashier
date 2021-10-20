@@ -45,7 +45,7 @@ namespace ConsoleCashier
                    "Штрих-код", "Название", "Цена");
             foreach (var product in Catalog.ProductsList)
             {
-                Console.WriteLine("{0,13} {1,35} {2,10}",
+                Console.WriteLine("{0,13} {1,-35} {2,10}",
                     product.Barcode,
                     product.Name,
                     product.Price);

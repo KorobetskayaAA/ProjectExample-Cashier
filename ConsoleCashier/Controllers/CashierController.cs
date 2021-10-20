@@ -7,7 +7,12 @@ namespace ConsoleCashier
 {
     class CashierController
     {
-        public Cashier Cashier { get; } = new Cashier();
+        public Cashier Cashier { get; }
+
+        public CashierController(List<Bill> bills = null)
+        {
+            Cashier = new Cashier(bills);
+        }
 
         public void FillBill(Catalog catalog)
         {

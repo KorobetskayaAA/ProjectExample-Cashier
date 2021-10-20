@@ -1,6 +1,7 @@
 ﻿using CashierModel;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ConsoleCashier
@@ -15,5 +16,38 @@ namespace ConsoleCashier
             new Product("5345738573637", "Томаты вес.", 90.5m),
             new Product("1234567891234", "Огурцы вес.", 75.25m),
          };
+
+
+        public static Bill FillMockBill(Bill bill, int seed = 0)
+        {
+            var rnd = new Random(seed);
+            var products = MockProducts;
+            int itemsCount = rnd.Next(products.Count());
+            for (int i = 0; i < itemsCount; i++)
+            {
+                bill.AddItem(
+                    products.ElementAt(rnd.Next(products.Count())),
+                    rnd.NextDouble() * 10
+                );
+            }
+            bill.FinishEditing();
+            return bill;
+        }
+
+        public static Bill GetMockBill(int seed = 0)
+        {
+            return FillMockBill(new Bill(), seed);
+        }
+
+        public static List<Bill> GetMockBills(int count = 1, int seed = 0)
+        {
+            var rnd = new Random(seed);
+            var bills = new List<Bill>(count);
+            for (int i = 0; i < count; i++)
+            {
+                bills.Add(GetMockBill(rnd.Next()));
+            }
+            return bills;
+        }
     }
 }

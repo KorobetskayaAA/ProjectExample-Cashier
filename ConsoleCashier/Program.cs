@@ -8,7 +8,8 @@ namespace ConsoleCashier
     class Program
     {
         readonly static CatalogController catalogController = new CatalogController(MocksFabric.MockProducts);
-        readonly static CashierController cashierController = new CashierController();
+        readonly static CashierController cashierController = new CashierController(MocksFabric.GetMockBills(3));
+
         static void Main(string[] args)
         {
             while (MainMenuInput());
