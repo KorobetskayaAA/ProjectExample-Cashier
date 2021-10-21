@@ -39,24 +39,13 @@ namespace ConsoleCashier
             return true;
         }
 
-        static readonly Menu catalogMenu = new Menu(new[] {
-            new MenuItem(ConsoleKey.F1, "Новый товар"),
-            new MenuItem(ConsoleKey.Tab, "Вернуться к чекам"),
-        });
-
         static bool CatalogMenuInput()
         {
             Console.Clear();
-            catalogMenu.Print();
+            CatalogController.Menu.Print();
             catalogController.PrintAllProducts();
-            switch (Console.ReadKey().Key)
-            {
-                case ConsoleKey.F1:
-                    catalogController.CreateProduct();
-                    break;
-                case ConsoleKey.Tab: return false;
-            }
-            return true;
+            var key = Console.ReadKey().Key;
+            return catalogController.MenuAction(key);
         }
     }
 }
