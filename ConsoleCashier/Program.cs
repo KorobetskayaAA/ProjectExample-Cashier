@@ -15,10 +15,12 @@ namespace ConsoleCashier
             while (MainMenuInput());
         }
 
-        static readonly Menu mainMenu = new Menu(new[] { 
-            new MenuItem(ConsoleKey.F1, "Новый чек"),
-            new MenuItem(ConsoleKey.Tab, "Перейти в каталог"),
-            new MenuItem(ConsoleKey.Escape, "Выход"),
+        static readonly Menu mainMenu = new Menu(new MenuItem[] { 
+            new MenuAction(ConsoleKey.F1, "Новый чек",
+                () => cashierController.FillBill(catalogController.Catalog)),
+            new MenuAction(ConsoleKey.Tab, "Перейти в каталог",
+                () => { while (CatalogMenuInput()); }),
+            new MenuClose(ConsoleKey.Escape, "Выход"),
         });
 
         static bool MainMenuInput()
@@ -26,26 +28,15 @@ namespace ConsoleCashier
             Console.Clear();
             mainMenu.Print();
             cashierController.PrintAllBills();
-            switch (Console.ReadKey().Key)
-            {
-                case ConsoleKey.F1:
-                    cashierController.FillBill(catalogController.Catalog);
-                    break;
-                case ConsoleKey.Tab:
-                    while (CatalogMenuInput());
-                    break;
-                case ConsoleKey.Escape: return false;
-            }
-            return true;
+            return mainMenu.Action(Console.ReadKey().Key);
         }
 
         static bool CatalogMenuInput()
         {
             Console.Clear();
-            CatalogController.Menu.Print();
+            catalogController.Menu.Print();
             catalogController.PrintAllProducts();
-            var key = Console.ReadKey().Key;
-            return catalogController.MenuAction(key);
+            return catalogController.Menu.Action(Console.ReadKey().Key);
         }
     }
 }

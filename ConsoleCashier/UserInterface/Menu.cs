@@ -6,7 +6,7 @@ namespace ConsoleCashier
 {
     class Menu
     {
-        IEnumerable<MenuItem> Items { get; }
+        public IEnumerable<MenuItem> Items { get; }
 
         public Menu(IEnumerable<MenuItem> items)
         {
@@ -18,11 +18,33 @@ namespace ConsoleCashier
             Console.BackgroundColor = ConsoleColor.DarkCyan;
             foreach (var item in Items)
             {
-                item.Print();
-                Console.Write("  ");
+                if (!item.Hidden)
+                {
+                    item.Print();
+                    Console.Write("  ");
+                }
             }
             Console.Write(new string(' ', Console.WindowWidth - Console.CursorLeft));
             Console.ResetColor();
+        }
+
+        public bool Action(ConsoleKey key)
+        {
+            foreach (var menuItem in Items)
+            {
+                if (menuItem.Key == key)
+                {
+                    if (menuItem is MenuClose)
+                    {
+                        return false;
+                    }
+                    if (menuItem is MenuAction)
+                    {
+                        (menuItem as MenuAction)?.Action();
+                    }
+                }
+            }
+            return true;
         }
     }
 }

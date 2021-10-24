@@ -38,6 +38,7 @@ namespace ConsoleCashier
         Product SelectedProduct => Catalog.ProductsCount > 0 
             ? OrderedProducts[SelectedProductIndex] 
             : null;
+
         Table<Product> table = new Table<Product>(new [] {
             new TableColumn<Product>("Штрих-код", 13,
                 product => product.Barcode),
@@ -46,10 +47,19 @@ namespace ConsoleCashier
             new TableColumn<Product>("Цена", 10,
                 product => string.Format("{0:#,##0.00}", product.Price)),
         });
+        public Menu Menu { get; }
 
         public CatalogController(Catalog catalog)
         {
             Catalog = catalog;
+            Menu = new Menu(new MenuItem[] {
+                new MenuAction(ConsoleKey.F1, "Новый товар", CreateProduct),
+                new MenuAction(ConsoleKey.F2, "Редактировать", EditSelectedProduct),
+                new MenuAction(ConsoleKey.F3, "Удалить", DeleteSelectedProduct),
+                new MenuAction(ConsoleKey.UpArrow, "Вверх", () => SelectedProductIndex--, true),
+                new MenuAction(ConsoleKey.DownArrow, "Вниз", () => SelectedProductIndex++, true),
+                new MenuClose(ConsoleKey.Tab, "Вернуться к чекам"),
+            });
         }
 
         public CatalogController() : this(new Catalog()) {}
@@ -100,36 +110,5 @@ namespace ConsoleCashier
             table.Print(OrderedProducts, SelectedProduct);
         }
 
-        public static Menu Menu { get; } = new Menu(new[] {
-            new MenuItem(ConsoleKey.F1, "Новый товар"),
-            new MenuItem(ConsoleKey.F2, "Редактировать"),
-            new MenuItem(ConsoleKey.F3, "Удалить"),
-            new MenuItem(ConsoleKey.Tab, "Вернуться к чекам"),
-        });
-
-
-        public bool MenuAction(ConsoleKey key)
-        {
-            switch (key)
-            {
-                case ConsoleKey.F1:
-                    CreateProduct();
-                    return true;
-                case ConsoleKey.F2:
-                    EditSelectedProduct();
-                    return true;
-                case ConsoleKey.F3:
-                    DeleteSelectedProduct();
-                    return true;
-                case ConsoleKey.UpArrow:
-                    SelectedProductIndex--;
-                    return true;
-                case ConsoleKey.DownArrow:
-                    SelectedProductIndex++;
-                    return true;
-                case ConsoleKey.Tab: return false;
-            }
-            return true;
-        }
     }
 }
