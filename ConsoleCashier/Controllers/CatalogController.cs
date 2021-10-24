@@ -15,31 +15,7 @@ namespace ConsoleCashier
             .OrderBy(product => product.Barcode.ToString())
             .ToList();
 
-        int selectedProductIndex = 0;
-        int SelectedProductIndex 
-        { 
-            get => selectedProductIndex; 
-            set
-            {
-                if (value < 0)
-                {
-                    selectedProductIndex = 0;
-                }
-                else if (value >= Catalog.ProductsCount)
-                {
-                    selectedProductIndex = Catalog.ProductsCount - 1;
-                }
-                else
-                {
-                    selectedProductIndex = value;
-                }
-            }
-        }
-        Product SelectedProduct => Catalog.ProductsCount > 0 
-            ? OrderedProducts[SelectedProductIndex] 
-            : null;
-
-        Table<Product> table = new Table<Product>(new [] {
+        Table<Product> table = new Table<Product>(new[] {
             new TableColumn<Product>("Штрих-код", 13,
                 product => product.Barcode),
             new TableColumn<Product>("Название", 35,
@@ -48,24 +24,27 @@ namespace ConsoleCashier
                 product => string.Format("{0:#,##0.00}", product.Price)),
         });
         public Menu Menu { get; }
+        public SelectFromList<Product> SelectProduct { get; }
+        public Product SelectedProduct => SelectProduct.SelectedNode;
 
         public CatalogController(Catalog catalog)
         {
             Catalog = catalog;
-            Menu = new Menu(new MenuItem[] {
-                new MenuAction(ConsoleKey.F1, "Новый товар", CreateProduct),
-                new MenuAction(ConsoleKey.F2, "Редактировать", EditSelectedProduct),
-                new MenuAction(ConsoleKey.F3, "Удалить", DeleteSelectedProduct),
-                new MenuAction(ConsoleKey.UpArrow, "Вверх", () => SelectedProductIndex--, true),
-                new MenuAction(ConsoleKey.DownArrow, "Вниз", () => SelectedProductIndex++, true),
-                new MenuClose(ConsoleKey.Tab, "Вернуться к чекам"),
-            });
+            SelectProduct = new SelectFromList<Product>(() => OrderedProducts);
+            Menu = new Menu(new List<MenuItem>(SelectProduct.Menu.Items) {
+                    new MenuAction(ConsoleKey.F1, "Новый товар", CreateProduct),
+                    new MenuAction(ConsoleKey.F2, "Редактировать", EditSelectedProduct),
+                    new MenuAction(ConsoleKey.F3, "Удалить", DeleteSelectedProduct),
+                    new MenuClose(ConsoleKey.Tab, "Вернуться к чекам"),
+                }
+            );
         }
 
-        public CatalogController() : this(new Catalog()) {}
+        public CatalogController() : this(new Catalog()) { }
 
         public CatalogController(IEnumerable<Product> products) :
-            this(new Catalog(products)) { }
+            this(new Catalog(products))
+        { }
 
         public void CreateProduct()
         {
@@ -101,7 +80,7 @@ namespace ConsoleCashier
             if (Console.ReadKey().Key == ConsoleKey.D)
             {
                 Catalog.RemoveProduct(product);
-                SelectedProductIndex--;
+                SelectProduct.SelectedNodeIndex--;
             }
         }
 
