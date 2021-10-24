@@ -1,23 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace ConsoleCashier.UserInterface
+namespace ConsoleCashier
 {
-    class Table
+    class Table<T> where T: class
     {
-        readonly IEnumerable<TableColumn> Columns;
-
-        public Table(IEnumerable<TableColumn> columns)
+        public Table(IEnumerable<TableColumn<T>> columns)
         {
             Columns = columns;
         }
 
-        int rowsScroll = 0;
+        readonly IEnumerable<TableColumn<T>> Columns;
 
-        public void Print()
+        public void Print(IEnumerable<T> rows, T selectedRow)
         {
-
+            foreach (var column in Columns)
+            {
+                Console.Write("{0} ", column.PrintTitle());
+            }
+            Console.WriteLine();
+            foreach (var row in rows)
+            {
+                if (row == selectedRow)
+                {
+                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                }
+                foreach (var column in Columns)
+                {
+                    Console.Write("{0} ", column.PrintCell(row));
+                }
+                Console.ResetColor();
+                Console.WriteLine();
+            }
         }
     }
 }

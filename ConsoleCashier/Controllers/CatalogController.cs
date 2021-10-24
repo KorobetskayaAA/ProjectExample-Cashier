@@ -38,6 +38,14 @@ namespace ConsoleCashier
         Product SelectedProduct => Catalog.ProductsCount > 0 
             ? OrderedProducts[SelectedProductIndex] 
             : null;
+        Table<Product> table = new Table<Product>(new [] {
+            new TableColumn<Product>("Штрих-код", 13,
+                product => product.Barcode),
+            new TableColumn<Product>("Название", 35,
+                product => product.Name),
+            new TableColumn<Product>("Цена", 10,
+                product => string.Format("{0:#,##0.00}", product.Price)),
+        });
 
         public CatalogController(Catalog catalog)
         {
@@ -89,21 +97,7 @@ namespace ConsoleCashier
 
         public void PrintAllProducts()
         {
-            Console.WriteLine("{0,-13} {1,-35} {2,-10}",
-                   "Штрих-код", "Название", "Цена");
-            foreach (var product in OrderedProducts)
-            {
-                if (product == SelectedProduct)
-                {
-                    Console.BackgroundColor = ConsoleColor.White;
-                    Console.ForegroundColor = ConsoleColor.Black;
-                }
-                Console.WriteLine("{0,13} {1,-35} {2,10}",
-                    product.Barcode,
-                    product.Name,
-                    product.Price);
-                Console.ResetColor();
-            }
+            table.Print(OrderedProducts, SelectedProduct);
         }
 
         public static Menu Menu { get; } = new Menu(new[] {
