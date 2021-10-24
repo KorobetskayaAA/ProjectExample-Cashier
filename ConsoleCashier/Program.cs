@@ -7,17 +7,21 @@ namespace ConsoleCashier
 {
     class Program
     {
-        readonly static CatalogController catalogController = new CatalogController(MocksFabric.MockProducts);
-        readonly static CashierController cashierController = new CashierController(MocksFabric.GetMockBills(3));
+        readonly static CatalogController catalogController;
+        readonly static CashierController cashierController;
+
+        static Program()
+        {
+            catalogController = new CatalogController(MocksFabric.MockProducts);
+            cashierController = new CashierController(catalogController.Catalog, MocksFabric.GetMockBills(3));
+        }
 
         static void Main(string[] args)
         {
             while (MainMenuInput());
         }
 
-        static readonly Menu mainMenu = new Menu(new MenuItem[] { 
-            new MenuAction(ConsoleKey.F1, "Новый чек",
-                () => cashierController.FillBill(catalogController.Catalog)),
+        static readonly Menu mainMenu = new Menu(new MenuItem[] {
             new MenuAction(ConsoleKey.Tab, "Перейти в каталог",
                 () => { while (CatalogMenuInput()); }),
             new MenuClose(ConsoleKey.Escape, "Выход"),
@@ -26,9 +30,11 @@ namespace ConsoleCashier
         static bool MainMenuInput()
         {
             Console.Clear();
+            cashierController.Menu.Print();
             mainMenu.Print();
             cashierController.PrintAllBills();
-            return mainMenu.Action(Console.ReadKey().Key);
+            var key = Console.ReadKey().Key;
+            return mainMenu.Action(key) ? cashierController.Menu.Action(key) : false;
         }
 
         static bool CatalogMenuInput()
