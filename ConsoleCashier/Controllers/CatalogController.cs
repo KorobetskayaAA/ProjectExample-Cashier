@@ -11,9 +11,18 @@ namespace ConsoleCashier
     {
         public Catalog Catalog { get; }
 
-        IList<Product> OrderedProducts => Catalog.ProductsList
-            .OrderBy(product => product.Barcode.ToString())
+        bool isOrderByPriceDesc = false;
+        IList<Product> OrderedProducts => (isOrderByPriceDesc
+            ? Catalog.ProductsList.OrderByDescending(product => product.Price)
+            : Catalog.ProductsList.OrderBy(product => product.Price))
             .ToList();
+        readonly Menu SortMenu;
+        void ChooseSortOrder()
+        {
+            Console.CursorTop = 0;
+            SortMenu.Print();
+            SortMenu.Action(Console.ReadKey().Key);
+        }
 
         Table<Product> table = new Table<Product>(new[] {
             new TableColumn<Product>("Штрих-код", 13,
@@ -35,9 +44,16 @@ namespace ConsoleCashier
                     new MenuAction(ConsoleKey.F1, "Новый товар", CreateProduct),
                     new MenuAction(ConsoleKey.F2, "Редактировать", EditSelectedProduct),
                     new MenuAction(ConsoleKey.F3, "Удалить", DeleteSelectedProduct),
+                    new MenuAction(ConsoleKey.F4, "Сортировать", ChooseSortOrder),
                     new MenuClose(ConsoleKey.Tab, "Вернуться к чекам"),
                 }
             );
+            SortMenu = new Menu(new List<MenuItem>() {
+                new MenuAction(ConsoleKey.DownArrow, "Сортировка по цене по убыванию",
+                    () => isOrderByPriceDesc = true),
+                new MenuAction(ConsoleKey.UpArrow, "Сортировка по цене по ворастанию",
+                    () => isOrderByPriceDesc = false),
+            });
         }
 
         public CatalogController() : this(new Catalog()) { }

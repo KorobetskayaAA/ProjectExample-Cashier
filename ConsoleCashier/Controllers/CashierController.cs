@@ -11,9 +11,17 @@ namespace ConsoleCashier
         public Cashier Cashier { get; }
         public Catalog Catalog { get; }
 
+        public Func<Bill, object> orderBy = bill => bill.Created;
         public IList<Bill> OrderedBills => Cashier.Bills
-            .OrderBy(bill => bill.Number)
+            .OrderBy(orderBy)
             .ToList();
+        readonly Menu SortMenu;
+        void ChooseOrder()
+        {
+            Console.CursorTop = 0;
+            SortMenu.Print();
+            SortMenu.Action(Console.ReadKey().Key);
+        }
 
         Table<Bill> table = new Table<Bill>(new[] {
             new TableColumn<Bill>("№", 10,
@@ -38,10 +46,20 @@ namespace ConsoleCashier
             SelectBill = new SelectFromList<Bill>(() => OrderedBills);
             Menu = new Menu(new List<MenuItem>(SelectBill.Menu.Items) {
                 new MenuAction(ConsoleKey.F1, "Новый чек", FillBill),
-                new MenuAction(ConsoleKey.F2, "Печать чека", 
+                new MenuAction(ConsoleKey.F2, "Печать чека",
                     () => PrintBill(SelectedBill)),
                 new MenuAction(ConsoleKey.F3, "Отменить чек",
                     () => CancelBill(SelectedBill)),
+                new MenuAction(ConsoleKey.F4, "Сортировать",
+                    ChooseOrder),
+                });
+            SortMenu = new Menu(new List<MenuItem>() {
+                new MenuAction(ConsoleKey.D1, "Сортировка по дате",
+                    () => orderBy = bill => bill.Created),
+                new MenuAction(ConsoleKey.D2, "Сортировка по сумме",
+                    () => orderBy = bill => bill.Sum),
+                new MenuAction(ConsoleKey.D3, "Сортировка по статусу",
+                    () => orderBy = bill => bill.Status),
             });
         }
 
