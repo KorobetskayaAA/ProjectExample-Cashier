@@ -11,16 +11,47 @@ namespace ConsoleCashier
         public Cashier Cashier { get; }
         public Catalog Catalog { get; }
 
-        public Func<Bill, object> orderBy = bill => bill.Created;
-        public IList<Bill> OrderedBills => Cashier.Bills
+        Func<Bill, object> orderBy = bill => bill.Created;
+        BillStatus? FilterByStatus = null;
+        public IList<Bill> OrderedBills => 
+            (FilterByStatus != null 
+                ? Cashier.FindBills(FilterByStatus ?? BillStatus.Active) 
+                : Cashier.Bills
+            )
             .OrderBy(orderBy)
             .ToList();
         readonly Menu SortMenu;
+        readonly Menu StatusMenu;
         void ChooseOrder()
         {
             Console.CursorTop = 0;
             SortMenu.Print();
             SortMenu.Action(Console.ReadKey().Key);
+        }
+        void ChooseStatus()
+        {
+            Console.CursorTop = 0;
+            StatusMenu.Print();
+            StatusMenu.Action(Console.ReadKey().Key);
+        }
+        void SearchBillByName()
+        {
+            Console.Clear();
+            Console.WriteLine("Поиск чека по номеру");
+            uint searchNumber = InputValidator.ReadBillNuber();
+            Bill foundBill = Cashier.FindBill(searchNumber); 
+            if (foundBill != null)
+            {
+                SelectBill.SelectedNode = foundBill;
+            }
+            else
+            {
+                Console.WriteLine("Чек с номером {0} не найден", searchNumber);
+                Console.WriteLine(
+                    "Нажмите любую клавишу, чтобы продолжить..."
+                );
+                Console.ReadKey();
+            }
         }
 
         Table<Bill> table = new Table<Bill>(new[] {
@@ -52,6 +83,10 @@ namespace ConsoleCashier
                     () => CancelBill(SelectedBill)),
                 new MenuAction(ConsoleKey.F4, "Сортировать",
                     ChooseOrder),
+                new MenuAction(ConsoleKey.F5, "Фильтр по статусу",
+                    ChooseStatus),
+                new MenuAction(ConsoleKey.F6, "Поиск по номеру",
+                    SearchBillByName),
                 });
             SortMenu = new Menu(new List<MenuItem>() {
                 new MenuAction(ConsoleKey.D1, "Сортировка по дате",
@@ -61,6 +96,17 @@ namespace ConsoleCashier
                 new MenuAction(ConsoleKey.D3, "Сортировка по статусу",
                     () => orderBy = bill => bill.Status),
             });
+            StatusMenu = new Menu(
+                new List<MenuItem>(
+                    BillStatusRus.Names.Select((status, index) =>
+                        new MenuAction(index + ConsoleKey.D1,
+                            status.Value,
+                            () => FilterByStatus = status.Key)
+                        ))
+                { 
+                    new MenuAction(ConsoleKey.D0, "Все", () => FilterByStatus = null)
+                }
+            );
         }
 
         public void FillBill()

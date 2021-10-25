@@ -30,9 +30,13 @@ namespace ConsoleCashier
                 }
             }
         }
-        public T SelectedNode => Nodes.Count > 0
+        public T SelectedNode
+        {
+            get => Nodes.Count > 0
             ? Nodes[SelectedNodeIndex]
             : null;
+            set => SelectedNodeIndex = Nodes.IndexOf(value);
+        }
         public Menu Menu { get; }
 
         public SelectFromList(Func<IList<T>> getNodes)

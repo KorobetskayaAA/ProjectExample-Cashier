@@ -12,16 +12,44 @@ namespace ConsoleCashier
         public Catalog Catalog { get; }
 
         bool isOrderByPriceDesc = false;
-        IList<Product> OrderedProducts => (isOrderByPriceDesc
-            ? Catalog.ProductsList.OrderByDescending(product => product.Price)
-            : Catalog.ProductsList.OrderBy(product => product.Price))
-            .ToList();
+        string searchBy = null;
+        string SearchBy { get => searchBy; set => searchBy = value.ToLower(); }
+        IList<Product> OrderedProducts
+        {
+            get
+            {
+                var products = Catalog.ProductsList;
+                if (!string.IsNullOrEmpty(SearchBy))
+                {
+                    products = products.Where(product =>
+                        product.Name.ToLower().Contains(SearchBy) ||
+                        product.Barcode.ToString().Contains(SearchBy)
+                    );
+                }
+                if (isOrderByPriceDesc)
+                {
+                    products = products.OrderByDescending(product => product.Price);
+                }
+                else
+                {
+                    products = products.OrderBy(product => product.Price);
+                }
+                return products.ToList();
+            }
+        }
         readonly Menu SortMenu;
         void ChooseSortOrder()
         {
             Console.CursorTop = 0;
             SortMenu.Print();
             SortMenu.Action(Console.ReadKey().Key);
+        }
+        void SearchProducts()
+        {
+            Console.Clear();
+            Console.WriteLine("Поиск товаров по названию и/или штрих-коду");
+            Console.Write("Введите текст для поиска, или пустое значение, чтобы показать все товары:");
+            SearchBy = Console.ReadLine();
         }
 
         Table<Product> table = new Table<Product>(new[] {
@@ -45,6 +73,7 @@ namespace ConsoleCashier
                     new MenuAction(ConsoleKey.F2, "Редактировать", EditSelectedProduct),
                     new MenuAction(ConsoleKey.F3, "Удалить", DeleteSelectedProduct),
                     new MenuAction(ConsoleKey.F4, "Сортировать", ChooseSortOrder),
+                    new MenuAction(ConsoleKey.F5, "Поиск", SearchProducts),
                     new MenuClose(ConsoleKey.Tab, "Вернуться к чекам"),
                 }
             );
@@ -102,6 +131,10 @@ namespace ConsoleCashier
 
         public void PrintAllProducts()
         {
+            if (!string.IsNullOrEmpty(SearchBy))
+            {
+                Console.WriteLine("Выплнен поиск по строке \"{0}\"", SearchBy);
+            }
             table.Print(OrderedProducts, SelectedProduct);
         }
 

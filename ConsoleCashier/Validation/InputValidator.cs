@@ -76,5 +76,19 @@ namespace ConsoleCashier
             }
             return price;
         }
+
+        public static uint ReadBillNuber()
+        {
+            Console.Write("Введите номер чека: ");
+            string input = Console.ReadLine();
+            uint number;
+            while (!uint.TryParse(input, out number))
+            {
+                Console.Error.WriteLine("Номер чека должен быть положительным целым числом.");
+                Console.Write("Введите номер чека: ");
+                input = Console.ReadLine();
+            }
+            return number;
+        }
     }
 }
