@@ -15,6 +15,18 @@ namespace CashierModel
         {
             Number = NextNumber++;
             Created = DateTime.Now;
+            items = new List<Item>();
+        }
+
+        public Bill(uint number, DateTime created, IEnumerable<Item> items)
+        {
+            Number = number;
+            if (number >= NextNumber)
+            {
+                NextNumber = number + 1;
+            }
+            Created = created;
+            this.items = items.ToList();
         }
 
         public override string ToString()
@@ -34,7 +46,7 @@ namespace CashierModel
         }
 
         #region Items
-        readonly List<Item> items = new List<Item>();
+        readonly List<Item> items;
         public IEnumerable<Item> Items => items;
         public Item this[Barcode barcode]
         {

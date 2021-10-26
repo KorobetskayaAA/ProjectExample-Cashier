@@ -74,6 +74,8 @@ namespace ConsoleCashier
                     new MenuAction(ConsoleKey.F3, "Удалить", DeleteSelectedProduct),
                     new MenuAction(ConsoleKey.F4, "Сортировать", ChooseSortOrder),
                     new MenuAction(ConsoleKey.F5, "Поиск", SearchProducts),
+                    new MenuAction(ConsoleKey.F9, "Сохранить", SaveToFile),
+                    new MenuAction(ConsoleKey.F10, "Загрузить", LoadFromFile),
                     new MenuClose(ConsoleKey.Tab, "Вернуться к чекам"),
                 }
             );
@@ -133,10 +135,33 @@ namespace ConsoleCashier
         {
             if (!string.IsNullOrEmpty(SearchBy))
             {
-                Console.WriteLine("Выплнен поиск по строке \"{0}\"", SearchBy);
+                Console.WriteLine("Выполнен поиск по строке \"{0}\"", SearchBy);
             }
             table.Print(OrderedProducts, SelectedProduct);
         }
 
+
+        void SaveToFile()
+        {
+            SelectFile.SaveToFile(
+                Catalog.ProductsList.Select(p => ProductFileDto.Map(p)),
+                "Каталог товаров",
+                "к каталогу"
+            );
+        }
+
+        void LoadFromFile()
+        {
+            var loadedData = SelectFile.LoadFromFile<ProductFileDto>(
+                "Каталог товаров",
+                "к каталогу"
+            );
+            if (loadedData != null)
+            {
+                Catalog.LoadProducts(
+                    loadedData.Select(p => ProductFileDto.Map(p))
+                );
+            }
+        }
     }
 }

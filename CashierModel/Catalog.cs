@@ -19,6 +19,15 @@ namespace CashierModel
         }
         public Catalog() { }
 
+        public void LoadProducts(IEnumerable<Product> products)
+        {
+            Products.Clear();
+            foreach (var product in products)
+            {
+                AddProduct(product);
+            }
+        }
+
         public Product this[Barcode barcode]
         {
             get => Products[barcode];

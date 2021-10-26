@@ -8,7 +8,7 @@ namespace ConsoleCashier
 {
     class CashierController
     {
-        public Cashier Cashier { get; }
+        public Cashier Cashier { get; private set; }
         public Catalog Catalog { get; }
 
         Func<Bill, object> orderBy = bill => bill.Created;
@@ -87,7 +87,11 @@ namespace ConsoleCashier
                     ChooseStatus),
                 new MenuAction(ConsoleKey.F6, "Поиск по номеру",
                     SearchBillByName),
-                });
+                new MenuAction(ConsoleKey.F9, "Сохранить", 
+                    SaveToFile),
+                new MenuAction(ConsoleKey.F10, "Загрузить", 
+                    LoadFromFile),
+            });
             SortMenu = new Menu(new List<MenuItem>() {
                 new MenuAction(ConsoleKey.D1, "Сортировка по дате",
                     () => orderBy = bill => bill.Created),
@@ -156,6 +160,28 @@ namespace ConsoleCashier
         public void PrintAllBills()
         {
             table.Print(OrderedBills, SelectedBill);
+        }
+        void SaveToFile()
+        {
+            SelectFile.SaveToFile(
+                Cashier.Bills.Select(b => BillFileDto.Map(b)),
+                "История продаж",
+                "к списку чеков"
+            );
+        }
+
+        void LoadFromFile()
+        {
+            var loadedData = SelectFile.LoadFromFile<BillFileDto>(
+                "История продаж",
+                "к списку чеков"
+            );
+            if (loadedData != null)
+            {
+                Cashier = new Cashier(
+                    loadedData.Select(p => BillFileDto.Map(p)).ToList()
+                );
+            }
         }
     }
 }

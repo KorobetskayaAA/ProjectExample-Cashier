@@ -15,7 +15,7 @@ namespace ConsoleCashier
             new Product("4609876541212", "Вода негаз. 0,5л", 15.6m),
             new Product("5345738573637", "Томаты вес.", 90.5m),
             new Product("1234567891234", "Огурцы вес.", 75.25m),
-         };
+        };
 
 
         public static Bill FillMockBill(Bill bill, int seed = 0)
@@ -27,7 +27,7 @@ namespace ConsoleCashier
             {
                 bill.AddItem(
                     products.ElementAt(rnd.Next(products.Count())),
-                    rnd.NextDouble() * 10
+                    Math.Round(rnd.NextDouble() * 10, 3)
                 );
             }
             bill.FinishEditing();
