@@ -7,8 +7,7 @@ namespace ConsoleCashier
 {
     static class SelectFile
     {
-        public static void SaveToFile<T>(IEnumerable<T> data,
-            string title, string backTo)
+        public static void SaveToFile<T>(IEnumerable<T> data, string title)
         {
             Console.Clear();
             Console.WriteLine($"{title}: сохранение в файл");
@@ -27,16 +26,14 @@ namespace ConsoleCashier
             {
                 Console.WriteLine("При сохранении файла произошла ошибка: " + e.Message);
             }
-            Console.WriteLine($"Для возврата {backTo} нажмите любую клавишу...");
-            Console.ReadKey();
         }
 
 
-        public static IEnumerable<T> LoadFromFile<T>(string title, string backTo)
+        public static IEnumerable<T> LoadFromFile<T>(string title)
         {
             Console.Clear();
             Console.WriteLine($"{title}: загрузка из файла");
-            Console.WriteLine("Внимание! Все существующие товары в каталоге будут удалены и перезаписаны из файла. Продолжить ? (да/нет)");
+            Console.WriteLine("Внимание! Все существующие данные будут удалены и перезаписаны из файла. Продолжить ? (да/нет)");
             if (!FileValidator.ReadYesNo())
             {
                 return null;
@@ -58,8 +55,6 @@ namespace ConsoleCashier
             {
                 Console.WriteLine("При загрузке файла произошла ошибка: " + e.Message);
             }
-            Console.WriteLine($"Для возврата {backTo} нажмите любую клавишу...");
-            Console.ReadKey();
             return data;
         }
     }

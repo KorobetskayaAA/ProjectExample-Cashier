@@ -163,24 +163,48 @@ namespace ConsoleCashier
         }
         void SaveToFile()
         {
-            SelectFile.SaveToFile(
-                Cashier.Bills.Select(b => BillFileDto.Map(b)),
-                "История продаж",
-                "к списку чеков"
-            );
+            try
+            {
+                SelectFile.SaveToFile(
+                    Cashier.Bills.Select(b => BillFileDto.Map(b)),
+                    "История продаж"
+                );
+            }
+            finally
+            {
+                Console.WriteLine($"Для возврата к списку чеков нажмите любую клавишу...");
+                Console.ReadKey();
+            }
         }
 
         void LoadFromFile()
         {
-            var loadedData = SelectFile.LoadFromFile<BillFileDto>(
-                "История продаж",
-                "к списку чеков"
-            );
-            if (loadedData != null)
+            try
             {
-                Cashier = new Cashier(
-                    loadedData.Select(p => BillFileDto.Map(p)).ToList()
+                var loadedData = SelectFile.LoadFromFile<BillFileDto>(
+                    "История продаж"
                 );
+                if (loadedData != null)
+                {
+                    Console.WriteLine("Выполняем чтение данных...");
+                    Cashier = new Cashier(
+                        loadedData.Select(p => BillFileDto.Map(p)).ToList()
+                    );
+                    Console.WriteLine("Чеки успешно загружены!");
+                }
+            }
+            catch (BarcodeFormatException e)
+            {
+                Console.WriteLine("Ошибка! Файл содержит некорректный штрих-код ({0}).", e.WrongValue);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Ошибка! Файл содержит некорректные данные: " + e.Message);
+            }
+            finally
+            {
+                Console.WriteLine($"Для возврата к списку чеков нажмите любую клавишу...");
+                Console.ReadKey();
             }
         }
     }

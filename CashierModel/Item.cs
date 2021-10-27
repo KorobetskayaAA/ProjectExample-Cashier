@@ -14,6 +14,10 @@ namespace CashierModel
 
         public Item(Product product, double amount)
         {
+            if (amount <= 0)
+            {
+                throw new ArgumentOutOfRangeException("amount", "Количество товара должно быть положительным числом");
+            }
             Barcode = product.Barcode;
             Name = product.Name;
             Price = product.Price;

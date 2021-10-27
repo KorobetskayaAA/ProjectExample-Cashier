@@ -20,6 +20,10 @@ namespace CashierModel
 
         public Bill(uint number, DateTime created, IEnumerable<Item> items)
         {
+            if (items.Count() == 0)
+            {
+                throw new ArgumentOutOfRangeException("items", "Чек не содержит товаров");
+            }
             Number = number;
             if (number >= NextNumber)
             {

@@ -4,6 +4,15 @@ using System.Text;
 
 namespace CashierModel
 {
+    public class BarcodeFormatException : FormatException
+    {
+        public string WrongValue { get; }
+        public BarcodeFormatException(string wrongValue) : base("Формат строки штрих-кода некорректен")
+        {
+            WrongValue = wrongValue;
+        }
+    }
+
     public struct Barcode
     {
         private const int Length = 13;
@@ -17,7 +26,7 @@ namespace CashierModel
         public Barcode(string barcode)
         {
             if (!IsCorrect(barcode))
-                throw new ArgumentException("Формат строки штрих-кода некорректен");
+                throw new BarcodeFormatException(barcode);
             this.barcode = ulong.Parse(barcode);
         }
 
