@@ -57,12 +57,20 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Table" />
+    <Folder Include="Initialization" />
+    <Folder Include="Views" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Table\BillStatus.sql" />
     <Build Include="Table\Bill.sql" />
     <Build Include="Table\Product.sql" />
     <Build Include="Table\Item.sql" />
+    <Build Include="Initialization\InsertMockData.sql" />
+    <Build Include="Views\vwBills.sql" />
+    <Build Include="Views\vwProductsSearchByBarcode.sql" />
+    <Build Include="Views\vwProductSearchByName.sql" />
+    <Build Include="Views\vwBillsSearchByDate.sql" />
+    <Build Include="Views\vwBillsSearchByNumber.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="CashierDb.refactorlog" />
