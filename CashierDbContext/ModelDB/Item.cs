@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace CashierDbContext.ModelDB
 {
-    public partial class Item
+    public sealed class Item
     {
         public long BillNumber { get; set; }
         public long Barcode { get; set; }
@@ -13,7 +13,7 @@ namespace CashierDbContext.ModelDB
         public decimal Price { get; set; }
         public float Quantity { get; set; }
 
-        public virtual Product BarcodeNavigation { get; set; }
-        public virtual Bill BillNumberNavigation { get; set; }
+        public Product BarcodeNavigation { get; set; }
+        public Bill BillNumberNavigation { get; set; }
     }
 }

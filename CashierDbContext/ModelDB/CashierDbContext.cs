@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
+// Только для учебных целей!
+// Не помещайте строки подключения в код, даже в комментарии!
 /* Scaffolded by
  * Scaffold-DbContext "Server=ANASTASY-ONB;Database=Cashier;Trusted_Connection=True;" \
  * Microsoft.EntityFrameworkCore.SqlServer \
@@ -24,22 +26,24 @@ namespace CashierDbContext.ModelDB
         {
         }
 
-        public virtual DbSet<Bill> Bills { get; set; }
-        public virtual DbSet<BillStatus> BillStatuses { get; set; }
-        public virtual DbSet<Item> Items { get; set; }
-        public virtual DbSet<Product> Products { get; set; }
-        public virtual DbSet<VwBill> VwBills { get; set; }
-        public virtual DbSet<VwBillsSearchByNumber> VwBillsSearchByNumbers { get; set; }
-        public virtual DbSet<VwBillsSearchByStatus> VwBillsSearchByStatuses { get; set; }
-        public virtual DbSet<VwProductSearchByName> VwProductSearchByNames { get; set; }
-        public virtual DbSet<VwProductsSearchByBarcode> VwProductsSearchByBarcodes { get; set; }
+        public DbSet<Bill> Bills { get; set; }
+        public DbSet<BillStatus> BillStatuses { get; set; }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<VwBill> VwBills { get; set; }
+        public DbSet<VwBillsSearchByNumber> VwBillsSearchByNumbers { get; set; }
+        public DbSet<VwBillsSearchByStatus> VwBillsSearchByStatuses { get; set; }
+        public DbSet<VwProductSearchByName> VwProductSearchByNames { get; set; }
+        public DbSet<VwProductsSearchByBarcode> VwProductsSearchByBarcodes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=ANASTASY-ONB;Database=Cashier;Trusted_Connection=True;");
+                // Только для учебных целей!
+                // Не помещайте строки подключения в код, даже в комментарии!
+                //setx CashierDb_ConnectionString "Server=ANASTASY-ONB;Database=Cashier;Trusted_Connection=True;"
+                optionsBuilder.UseSqlServer(Environment.GetEnvironmentVariable("CashierDb_ConnectionString"));
             }
         }
 

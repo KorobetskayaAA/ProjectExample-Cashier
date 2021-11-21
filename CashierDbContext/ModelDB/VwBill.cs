@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace CashierDbContext.ModelDB
 {
-    public partial class VwBill
+    public sealed class VwBill
     {
         public long Number { get; set; }
         public DateTime Created { get; set; }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace CashierDbContext.ModelDB
 {
-    public partial class Product
+    public sealed class Product
     {
         public long Barcode { get; set; }
         public string Name { get; set; }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace CashierDbContext.ModelDB
 {
-    public partial class VwProductSearchByName
+    public sealed class VwProductSearchByName
     {
         public long Barcode { get; set; }
         public string Name { get; set; }
