@@ -13,6 +13,7 @@ namespace ConsoleCashier
         public uint Number { get; set; }
         [XmlAttribute("created")]
         public DateTime Created { get; set; }
+        public int Status { get; set; }
         public ItemFileDto[] Items { get; set; }
 
 
@@ -22,6 +23,7 @@ namespace ConsoleCashier
             {
                 Number = bill.Number,
                 Created = bill.Created,
+                Status = (int)bill.Status,
                 Items = bill.Items.Select(item => ItemFileDto.Map(item)).ToArray()
             };
         }
@@ -31,6 +33,7 @@ namespace ConsoleCashier
             return new Bill(
                 bill.Number,
                 bill.Created,
+                (BillStatus)bill.Status,
                 bill.Items.Select(item => ItemFileDto.Map(item))
             );
         }

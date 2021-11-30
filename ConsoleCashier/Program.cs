@@ -1,4 +1,5 @@
 ﻿using CashierModel;
+using ConsoleCashier.DB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +10,30 @@ namespace ConsoleCashier
     {
         readonly static CatalogController catalogController;
         readonly static CashierController cashierController;
+        const bool useMocks = false;
 
         static Program()
         {
-            catalogController = new CatalogController(MocksFabric.MockProducts);
-            cashierController = new CashierController(catalogController.Catalog, MocksFabric.GetMockBills(3));
+            if (useMocks)
+            {
+                catalogController = new CatalogController(MocksFabric.MockProducts);
+                cashierController = new CashierController(catalogController.Catalog, MocksFabric.GetMockBills(3));
+            }
+            else
+            {
+                catalogController = new CatalogController(DbManager.GetProducts());
+                cashierController = new CashierController(catalogController.Catalog, DbManager.GetBills());
+            }
         }
 
         static void Main(string[] args)
         {
             while (MainMenuInput());
+            if (!useMocks)
+            {
+                DbManager.UpdateProducts(catalogController.Catalog.ProductsList);
+                DbManager.UpdateBills(cashierController.Cashier.Bills);
+            }
         }
 
         static readonly Menu mainMenu = new Menu(new MenuItem[] {

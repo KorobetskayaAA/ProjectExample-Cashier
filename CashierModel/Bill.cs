@@ -18,7 +18,7 @@ namespace CashierModel
             items = new List<Item>();
         }
 
-        public Bill(uint number, DateTime created, IEnumerable<Item> items)
+        public Bill(uint number, DateTime created, BillStatus status, IEnumerable<Item> items)
         {
             if (items.Count() == 0)
             {
@@ -30,6 +30,7 @@ namespace CashierModel
                 NextNumber = number + 1;
             }
             Created = created;
+            Status = status;
             this.items = items.ToList();
         }
 
