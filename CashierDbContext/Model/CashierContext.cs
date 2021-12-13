@@ -15,6 +15,7 @@ namespace CashierDB.Model
         public DbSet<ProductDbDto> Products { get; set; }
         public DbSet<ItemDbDto> Items { get; set; }
         public DbSet<BillDbDto> Bills { get; set; }
+        public DbSet<BillStatusDbDto> BillStatuses { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

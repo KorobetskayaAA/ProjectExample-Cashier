@@ -21,7 +21,7 @@ namespace CashierDB.Migrations
 
             modelBuilder.Entity("CashierDB.Model.DTO.BillDbDto", b =>
                 {
-                    b.Property<long>("Number")
+                    b.Property<long>("Number_")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
@@ -33,7 +33,7 @@ namespace CashierDB.Migrations
                         .HasColumnType("int")
                         .HasColumnName("Status");
 
-                    b.HasKey("Number");
+                    b.HasKey("Number_");
 
                     b.HasIndex("StatusId");
 

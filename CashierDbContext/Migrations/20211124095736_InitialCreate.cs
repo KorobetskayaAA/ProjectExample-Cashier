@@ -36,7 +36,8 @@ namespace CashierDB.Migrations
                 name: "Bill",
                 columns: table => new
                 {
-                    Number = table.Column<long>(type: "bigint", nullable: false),
+                    Number = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false)
                 },

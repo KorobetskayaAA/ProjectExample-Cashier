@@ -23,7 +23,7 @@ namespace CashierDB.Model.DTO
 
         [Required]
         [Column("Bill")]
-        public uint BillNumber { get; set; }
+        public long BillNumber { get; set; }
         [ForeignKey("BillNumber")]
         public BillDbDto Bill { get; set; }
         

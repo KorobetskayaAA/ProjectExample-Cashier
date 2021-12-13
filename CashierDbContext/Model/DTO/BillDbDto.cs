@@ -10,7 +10,8 @@ namespace CashierDB.Model.DTO
     public class BillDbDto
     {
         [Key]
-        public uint Number { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long Number { get; set; }
         public DateTime Created { get; set; }
 
         public ICollection<ItemDbDto> Items { get; set; }
