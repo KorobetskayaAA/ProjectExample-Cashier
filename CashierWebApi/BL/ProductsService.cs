@@ -17,9 +17,9 @@ namespace CashierWebApi.BL
             this.repository = repository;
         }
 
-        public async Task<IEnumerable<ProductApiDto>> GetAsync()
+        public async Task<IEnumerable<ProductApiDto>> GetAsync(string search, bool? sortPriceAsc)
         {
-            var products = await repository.GetAllAsync();
+            var products = await repository.GetAllAsync(search, sortPriceAsc);
             return products.Select(p => new ProductApiDto(p)).ToList();
         }
 

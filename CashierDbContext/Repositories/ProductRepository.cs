@@ -3,6 +3,7 @@ using CashierDB.Model.DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,10 +13,24 @@ namespace CashierDB.Repositories
     {
         public ProductRepository(CashierContext context) : base(context) { }
 
-        public async Task<IEnumerable<ProductDbDto>> GetAllAsync()
+        public async Task<IEnumerable<ProductDbDto>> GetAllAsync(string search, bool? sortPriceAsc)
         {
-            var products = await context.Products.ToListAsync();
-            return products;
+            var products = context.Products.AsQueryable();
+            if (!string.IsNullOrEmpty(search))
+            {
+                products = products
+                    .Where(p => EF.Functions.Like(p.Name, $"%{search}%") 
+                            || EF.Functions.Like(p.Barcode, $"%{search}%"));
+            }
+            if (sortPriceAsc == true)
+            {
+                products = products.OrderBy(p => p.Price);
+            }
+            else if (sortPriceAsc == false)
+            {
+                products = products.OrderByDescending(p => p.Price);
+            }
+            return await products.ToListAsync();
         }
 
         public async Task<ProductDbDto> GetAsync(string barcode)

@@ -4,7 +4,6 @@ using CashierWebApi.BL.Model;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -24,9 +23,13 @@ namespace CashierWebApi.Controllers
 
         // GET: api/<ProductsController>
         [HttpGet]
-        public async Task<IEnumerable<ProductApiDto>> Get()
+        public async Task<IEnumerable<ProductApiDto>> Get(string search, string sortPrice)
         {
-            return await service.GetAsync();
+            bool sortAsc = sortPrice?.ToLower() == "asc";
+            bool sortDesc = sortPrice?.ToLower() == "desc";
+            return sortAsc || sortDesc ? 
+                await service.GetAsync(search, sortAsc)
+                : await service.GetAsync(search, null);
         }
 
         // GET api/<ProductsController>/5
