@@ -19,9 +19,9 @@ namespace CashierWebApi.BL
             this.statusRepository = statusRepository;
         }
 
-        public async Task<IEnumerable<BillApiDto>> GetAllAsync()
+        public async Task<IEnumerable<BillApiDto>> GetAllAsync(int? statusId, string orderBy, bool orderAsc)
         {
-            var bills = await billRepository.GetAllAsync();
+            var bills = await billRepository.GetAllAsync(statusId, orderBy, orderAsc);
             return bills.Select(b => new BillApiDto(b));
         }
 

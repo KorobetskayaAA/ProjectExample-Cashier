@@ -24,9 +24,9 @@ namespace CashierWebApi.Controllers
 
         // GET: api/<BillsController>
         [HttpGet]
-        public async Task<IEnumerable<BillApiDto>> Get()
+        public async Task<IEnumerable<BillApiDto>> Get(int? statusId, string orderBy, bool orderAsc)
         {
-            return await service.GetAllAsync();
+            return await service.GetAllAsync(statusId, orderBy?.ToLower(), orderAsc);
         }
 
         // GET: api/<BillsController>/statuses

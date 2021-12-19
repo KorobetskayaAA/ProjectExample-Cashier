@@ -20,5 +20,9 @@ namespace CashierDB.Model.DTO
         public int StatusId { get; set; }
         [ForeignKey("StatusId")]
         public BillStatusDbDto Status { get; set; }
+
+        public string CreatorId { get; set; }
+        [ForeignKey("CreatorId")]
+        public UserDbDto Creator { get; set; }
     }
 }

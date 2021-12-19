@@ -47,6 +47,7 @@ namespace CashierWebApi.Controllers
                 {
                     return NotFound(ex.Message);
                 }
+                return StatusCode(500);
             }
             return product;
         }

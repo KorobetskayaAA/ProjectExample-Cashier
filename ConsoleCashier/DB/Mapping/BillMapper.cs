@@ -11,7 +11,7 @@ namespace ConsoleCashier.DB.Mapping
             if (bill == null)
                 return null;
             return new Bill(
-                bill.Number,
+                (uint)bill.Number,
                 bill.Created,
                 (BillStatus)bill.StatusId,
                 bill.Items.Select(i => ItemMapper.Map(i)).ToList()
