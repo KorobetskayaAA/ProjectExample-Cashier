@@ -1,13 +1,14 @@
 ﻿using CashierDB.Connection;
 using CashierDB.Model.Configure;
 using CashierDB.Model.DTO;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 
 namespace CashierDB.Model
 {
-    public class CashierContext : DbContext
+    public class CashierContext : IdentityDbContext<UserDbDto>
     {
         public CashierContext() : base() {}
         public CashierContext(DbContextOptions options) : base(options) {}
@@ -16,7 +17,6 @@ namespace CashierDB.Model
         public DbSet<ItemDbDto> Items { get; set; }
         public DbSet<BillDbDto> Bills { get; set; }
         public DbSet<BillStatusDbDto> BillStatuses { get; set; }
-
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -28,6 +28,7 @@ namespace CashierDB.Model
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new BillStatusConfiguration());
         }
     }

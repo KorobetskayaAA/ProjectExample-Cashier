@@ -1,21 +1,21 @@
 ﻿using CashierWebApi.BL;
 using CashierWebApi.BL.Exceptions;
 using CashierWebApi.BL.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace CashierWebApi.Controllers
 {
+    [Authorize(Roles = "Cashier,Manager")]
     [Route("api/[controller]")]
     [ApiController]
     public class BillsController : ControllerBase
     {
-        BillsService service;
+        readonly BillsService service;
 
         public BillsController(BillsService service)
         {
@@ -52,7 +52,8 @@ namespace CashierWebApi.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] IEnumerable<ItemApiDto> items)
         {
-            var ex = await service.CreateAsync(items);
+            string userName = HttpContext.User.Identity.Name;
+            var ex = await service.CreateAsync(items, userName);
             if (ex != null)
             {
                 return StatusCode(500, ex.Message);

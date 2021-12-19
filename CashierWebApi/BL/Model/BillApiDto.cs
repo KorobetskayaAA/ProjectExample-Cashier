@@ -24,12 +24,13 @@ namespace CashierWebApi.BL.Model
             Items = bill.Items.Select(i => new ItemApiDto(i));
         }
 
-        public static BillDbDto Create(IEnumerable<ItemApiDto> items)
+        public static BillDbDto Create(IEnumerable<ItemApiDto> items, string creatorId)
         {
             return new BillDbDto()
             {
                 Created = DateTime.Now,
                 StatusId = 1,
+                CreatorId = creatorId,
                 Items = items.Select(i => i.Create()).ToList(),
             };
         }

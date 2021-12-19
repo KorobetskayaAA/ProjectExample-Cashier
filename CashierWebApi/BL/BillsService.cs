@@ -1,6 +1,8 @@
-﻿using CashierDB.Repositories;
+﻿using CashierDB.Model.DTO;
+using CashierDB.Repositories;
 using CashierWebApi.BL.Exceptions;
 using CashierWebApi.BL.Model;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +14,14 @@ namespace CashierWebApi.BL
     {
         BillRepository billRepository;
         BillStatusRepository statusRepository;
+        UserManager<UserDbDto> userManager;
 
-        public BillsService(BillRepository billRepository, BillStatusRepository statusRepository)
+        public BillsService(BillRepository billRepository, BillStatusRepository statusRepository,
+            UserManager<UserDbDto> userManager)
         {
             this.billRepository = billRepository;
             this.statusRepository = statusRepository;
+            this.userManager = userManager;
         }
 
         public async Task<IEnumerable<BillApiDto>> GetAllAsync(int? statusId, string orderBy, bool orderAsc)
@@ -41,9 +46,10 @@ namespace CashierWebApi.BL
             return new BillApiDto(bill);
         }
 
-        public async Task<Exception> CreateAsync(IEnumerable<ItemApiDto> items)
+        public async Task<Exception> CreateAsync(IEnumerable<ItemApiDto> items, string userName)
         {
-            var bill = BillApiDto.Create(items);
+            var user = await userManager.FindByIdAsync(userName);
+            var bill = BillApiDto.Create(items, user.Id);
             billRepository.Create(bill);
             try
             {

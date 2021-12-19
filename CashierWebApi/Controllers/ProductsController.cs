@@ -1,6 +1,7 @@
 ﻿using CashierWebApi.BL;
 using CashierWebApi.BL.Exceptions;
 using CashierWebApi.BL.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace CashierWebApi.Controllers
 {
+    [Authorize(Roles = "Manager")]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
@@ -21,6 +23,7 @@ namespace CashierWebApi.Controllers
             this.service = service;
         }
 
+        [Authorize(Roles = "Cashier,Manager")]
         // GET: api/<ProductsController>
         [HttpGet]
         public async Task<IEnumerable<ProductApiDto>> Get(string search, string sortPrice)
