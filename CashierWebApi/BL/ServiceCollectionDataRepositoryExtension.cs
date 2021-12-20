@@ -16,6 +16,7 @@ namespace CashierWebApi.BL
         {
             services.AddTransient<ProductsService>();
             services.AddTransient<BillsService>();
+            services.AddScoped<UsersService>();
         }
     }
 }

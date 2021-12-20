@@ -9,6 +9,8 @@ using CashierWebApi.BL;
 using Microsoft.OpenApi.Models;
 using CashierDB.Model.DTO;
 using Microsoft.AspNetCore.Identity;
+using CashierWebApi.BL.Auth;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace CashierWebApi
 {
@@ -27,12 +29,16 @@ namespace CashierWebApi
             services.AddDbContext<CashierContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
             );
-            
-            services.AddIdentity<UserDbDto, IdentityRole>(options => {
+
+            services.AddIdentity<UserDbDto, IdentityRole>(options =>
+            {
                 options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultProvider;
             })
-                .AddDefaultTokenProviders()
-                .AddEntityFrameworkStores<CashierContext>();
+                .AddEntityFrameworkStores<CashierContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddScoped<IUserClaimsPrincipalFactory<UserDbDto>,
+                AdditionalUserClaimsPrincipalFactory>();
 
             services.AddCashierRepositories();
             services.AddCashierServices();
@@ -44,10 +50,8 @@ namespace CashierWebApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Cashier API" });
             });
 
-            services.AddLogging();
-
-            services.AddScoped<BL.Auth.IdentityDataInitializer>();
-            services.AddHostedService<BL.Auth.SetupIdentityDataInitializer>();
+            services.AddScoped<IdentityDataInitializer>();
+            services.AddHostedService<SetupIdentityDataInitializer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
