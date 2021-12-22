@@ -23,7 +23,7 @@ namespace CashierWebApi.BL.Auth
             var identity = (ClaimsIdentity)principal.Identity;
 
             var claims = new List<Claim>();
-            claims.Add(new Claim(ClaimTypes.Email, user.FirstName ?? ""));
+            claims.Add(new Claim(ClaimTypes.Email, user.Email ?? ""));
             claims.Add(new Claim("FirstName", user.FirstName ?? ""));
             claims.Add(new Claim("MiddleName", user.MiddleName ?? ""));
             claims.Add(new Claim("LastName", user.LastName ?? ""));

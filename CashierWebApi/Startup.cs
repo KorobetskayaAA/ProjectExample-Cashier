@@ -10,7 +10,6 @@ using Microsoft.OpenApi.Models;
 using CashierDB.Model.DTO;
 using Microsoft.AspNetCore.Identity;
 using CashierWebApi.BL.Auth;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace CashierWebApi
 {
