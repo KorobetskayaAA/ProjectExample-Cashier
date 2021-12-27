@@ -1,0 +1,30 @@
+/* Настройки стиля скопированы из bootstrap-стиля active
+   Селектор выбирает метку, такую что она указывает на соотвествующий input
+   и этот input выбран (checked). 
+   ~ - это селектор соседства
+   * label - метка не на одном уровне с input, а завернута в какие-то другие теги
+*/
+
+#tab-userProfile:checked~* label[for="tab-userProfile"],
+#tab-changePassword:checked~* label[for="tab-changePassword"],
+#tab-userRoles:checked~* label[for="tab-userRoles"] {
+    color: #495057;
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
+}
+
+
+/* По умолчанию все формы скрыты */
+
+form {
+    display: none;
+}
+
+
+/* Если соответствующий input выбран (checked), то показать форму */
+
+#tab-userProfile:checked~#form-userProfile,
+#tab-changePassword:checked~#form-changePassword,
+#tab-userRoles:checked~#form-userRoles {
+    display: block;
+}
