@@ -20,7 +20,6 @@
     "CashierWebApi": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/bills",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
