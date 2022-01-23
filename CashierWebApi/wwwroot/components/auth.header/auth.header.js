@@ -90,9 +90,17 @@ export class AuthHeader extends HTMLElement {
             .then((profile) => {
                 this.profile = profile;
                 if (profile) {
+                    let userFullName = profile.lastName;
+                    if (profile.firstName) {
+                        userFullName += " " + profile.firstName[0] + ".";
+                    }
+                    if (profile.middleName) {
+                        userFullName += profile.middleName[0] + ".";
+                    }
                     this.replaceChildren(
-                        createUserDropdown(profile.userName, () =>
-                            this.logout()
+                        createUserDropdown(
+                            userFullName || profile.userName,
+                            () => this.logout()
                         )
                     );
                 } else {
