@@ -98,6 +98,8 @@ namespace CashierWebApi.Controllers
             {
                 return BadRequest(result.Message);
             }
+            var user = await signInManager.UserManager.GetUserAsync(HttpContext.User);
+            await signInManager.RefreshSignInAsync(user);
             return Ok();
         }
 
