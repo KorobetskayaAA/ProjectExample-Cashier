@@ -1,3 +1,21 @@
+import "/components/alert/alert.js";
+
+export function setLoading(form, loading) {
+    form.loading = loading;
+    form.disabled = true;
+    let spinner = form.querySelector(".spinner-border");
+    if (loading) {
+        if (!spinner) {
+            spinner = document.createElement("div");
+            spinner.className = "spinner-border text-primary";
+            form.prepend(spinner);
+        }
+        form.classList.add("loading");
+    } else {
+        form.classList.remove("loading");
+        spinner?.remove();
+    }
+}
 export function setSubmitting(form, submitting) {
     form.submitting = submitting;
     const submitButton = form.querySelector('button[type="submit"]');

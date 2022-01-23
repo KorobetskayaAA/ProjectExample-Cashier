@@ -1,11 +1,10 @@
 * {
     /* Шрифт по умолчанию */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     /* Включать ширину рамки в размер блока.
        Иначе при наличии рамки блоки будут "вылезать" в стороны. */
     box-sizing: border-box;
 }
-
 
 /* Опускаем подвал к нижней границе страницы,
    растянув main */
@@ -22,4 +21,15 @@ main {
 
 footer {
     font-size: smaller;
+}
+
+form.loading > * {
+    visibility: hidden;
+}
+form .spinner-border {
+    visibility: hidden;
+}
+
+form.loading .spinner-border {
+    visibility: visible;
 }

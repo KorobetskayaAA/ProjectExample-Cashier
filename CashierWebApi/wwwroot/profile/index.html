@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <link href="../_css/style.css" rel="stylesheet">
     <script src="/components/auth.header/auth.header.js" type="module"></script>
+    <script src="./_js/edit.profile.js" type="module"></script>
 </head>
 
 <body>
@@ -28,33 +29,26 @@
                 </ul>
             </nav>
 
-
             <auth-header></auth-header>
     </header>
 
     <main class="my-3">
         <div class="container">
-            <form>
+            <form id="form-editProfile">
+                <div class="row mt-3">
+                    <form-field name="lastName" label="Фамилия" placeholder="Введите фамилию" required></form-field>
+                </div>
                 <div class="row mt-3">
                     <div class="col">
-                        <label for="lastNameInput" class="form-label">Фамилия</label>
-                        <input type="text" class="form-control" name="lastNameInput" placeholder="Фамилия" value="Иванов">
+                        <form-field name="firstName" label="Имя" placeholder="Введите имя" required></form-field>
+                    </div>
+                    <div class="col">
+                        <form-field name="middleName" label="Отчество" placeholder="Введите отчество" required></form-field>
                     </div>
                 </div>
                 <div class="row mt-3">
                     <div class="col">
-                        <label for="firstNameInput" class="form-label">Имя</label>
-                        <input type="text" class="form-control" name="firstNameInput" placeholder="Имя" value="Алексей">
-                    </div>
-                    <div class="col">
-                        <label for="middleNameInput" class="form-label">Отчество</label>
-                        <input type="text" class="form-control" name="middleNameInput" placeholder="Отчество" value="Евгеньевич">
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col">
-                        <label for="emailInput" class="form-label">Email</label>
-                        <input type="text" class="form-control" name="emailInput" placeholder="Email" value="aivanov@example.com">
+                        <form-field type="email" name="email" label="Email" placeholder="Введите email" required></form-field>
                     </div>
                 </div>
                 <div class="row my-5">
