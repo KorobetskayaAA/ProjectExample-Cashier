@@ -1,4 +1,8 @@
-import api, { HttpStatusError } from "../../utils/api.js";
+import api, { HttpStatusError } from "/utils/api.js";
+import { setSubmitting, setAlert as setError } from "/utils/forms.js";
+import "/components/auth.header/auth.header.js";
+import "/components/submit.button/submit.button.js";
+import "/components/alert/alert.js";
 
 function loginRequest(userName, password, rememberMe) {
     return api.post("account/login", {
@@ -14,14 +18,13 @@ function goBack() {
 }
 
 const loginForm = document.getElementById("login-form");
-let isSubmitting = false;
 
 loginForm.addEventListener("submit", async (evt) => {
     evt.preventDefault();
-
-    if (isSubmitting) return;
-
     const form = evt.target;
+
+    if (form.submitting) return;
+
     const userName = form["userName"].value;
     const password = form["password"].value;
     const rememberMe = form["rememberMe"].checked;
@@ -47,35 +50,3 @@ loginForm.addEventListener("submit", async (evt) => {
         setSubmitting(form, false);
     }
 });
-function setSubmitting(form, submitting) {
-    isSubmitting = submitting;
-    const submitButton = form.querySelector('button[type="submit"]');
-    if (isSubmitting) {
-        submitButton.disabled = true;
-        const spinner = document.createElement("span");
-        spinner.classList.add("spinner-border");
-        spinner.classList.add("spinner-border-sm");
-        submitButton.prepend(spinner);
-    } else {
-        submitButton.disabled = undefined;
-        const spinner = submitButton.querySelector(".spinner-border");
-        spinner.remove();
-    }
-}
-function setError(form, message) {
-    errorMessage = message;
-    let alertElement = form.querySelector(".alert");
-    if (!alertElement) {
-        alertElement = document.createElement("div");
-        alertElement.classList.add("alert");
-        alertElement.classList.add("alert-danger");
-        form.append(alertElement);
-    }
-    if (message) {
-        alertElement.classList.remove("visually-hidden");
-        alertElement.innerText = message;
-    } else {
-        alertElement.classList.add("visually-hidden");
-        alertElement.innerText = "";
-    }
-}
