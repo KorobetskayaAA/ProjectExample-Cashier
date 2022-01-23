@@ -5,13 +5,14 @@ const getApiUrl = (path) => new URL(path, apiHost).href;
 function createHttpRequest(path, method = "GET", body) {
     const url = getApiUrl(path);
     const headers = new Headers();
-    if (body) {
-        headers.append("Content-Type", "application/json");
+    if (!(body instanceof FormData) && typeof body !== "string") {
+        headers.append("Content-Type", "application/json;charset=utf-8");
+        body = JSON.stringify(body);
     }
     return new Request(url, {
         method,
         headers,
-        body: JSON.stringify(body),
+        body,
     });
 }
 

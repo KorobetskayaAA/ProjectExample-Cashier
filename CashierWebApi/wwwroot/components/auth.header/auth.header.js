@@ -50,6 +50,7 @@ function createUserMenu(logoutAction) {
 function createUserDropdown(userName, logoutAction) {
     const dropdown = document.createElement("div");
     dropdown.classList.add("dropdown");
+    // TODO refactor
     dropdown.innerHTML = `<button class="btn btn-primary" type="button" id="profileMenu" data-bs-toggle="dropdown" aria-expanded="false">
          <span id="authHeader-userName">${userName}</span> <i class="bi bi-person-circle"></i>
         </button>`;
@@ -84,6 +85,7 @@ export class AuthHeader extends HTMLElement {
 
     render() {
         this.replaceChildren(this.loading);
+        // TODO refactor
         getProfile()
             .then((profile) => {
                 this.profile = profile;
