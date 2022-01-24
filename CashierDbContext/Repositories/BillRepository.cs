@@ -48,7 +48,7 @@ namespace CashierDB.Repositories
 
         private static IQueryable<BillDbDto> OrderByDate(bool orderAsc, IQueryable<BillDbDto> bills)
         {
-            return OrderBy(orderAsc, bills, b => b.StatusId);
+            return OrderBy(orderAsc, bills, b => b.Created);
         }
 
         private static IQueryable<BillDbDto> OrderBy<TKey>(bool orderAsc, IQueryable<BillDbDto> bills,
