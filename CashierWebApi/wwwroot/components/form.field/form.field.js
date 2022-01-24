@@ -56,6 +56,11 @@ class FormField extends HTMLElement {
             "error",
             "required",
             "validation",
+            "maxlength",
+            "size",
+            "min",
+            "max",
+            "step",
         ];
     }
 
@@ -140,9 +145,6 @@ class FormField extends HTMLElement {
             case "value":
                 this.input.value = newValue;
                 break;
-            case "type":
-                this.input.type = newValue;
-                break;
             case "placeholder":
                 this.input.placeholder = newValue;
                 break;
@@ -154,6 +156,9 @@ class FormField extends HTMLElement {
                 break;
             case "validation":
                 this.validation = newValue;
+                break;
+            default:
+                this.input.setAttribute(name, newValue);
                 break;
         }
     }
