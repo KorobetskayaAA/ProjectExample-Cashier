@@ -12,3 +12,12 @@ export const createRublesFormat = (showCurrency) => {
 
     return Intl.NumberFormat("default", options);
 };
+
+export const createAmountFormat = () => {
+    const options = {
+        maximumFractionDigits: 3,
+        useGrouping: false,
+    };
+
+    return Intl.NumberFormat("default", options);
+};

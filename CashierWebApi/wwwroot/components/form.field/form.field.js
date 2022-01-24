@@ -61,6 +61,7 @@ class FormField extends HTMLElement {
             "min",
             "max",
             "step",
+            "disabled",
         ];
     }
 
