@@ -59,7 +59,7 @@ namespace CashierWebApi.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> Put([FromBody] UserProfileCreateApiDto profile)
+        public async Task<ActionResult> Put([FromBody] UserProfileApiDto profile)
         {
             var result = await userService.UpdateProfile(profile);
             if (result is KeyNotFoundException)
@@ -114,6 +114,25 @@ namespace CashierWebApi.Controllers
             if (result != null)
             {
                 return BadRequest(result.Message);
+            }
+            return Ok();
+        }
+
+        [HttpPost("{username}/password")]
+        public async Task<ActionResult> PostPassword(string userName, [FromForm] string password)
+        {
+            var result = await userService.ResetPassword(userName, password);
+            if (result is KeyNotFoundException)
+            {
+                return NotFound(result.Message);
+            }
+            if (result is SaveChangesException)
+            {
+                return BadRequest(result.Message);
+            }
+            if (result != null)
+            {
+                return StatusCode(500, result.Message);
             }
             return Ok();
         }

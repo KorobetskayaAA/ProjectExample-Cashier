@@ -67,7 +67,8 @@ export class AuthHeader extends HTMLElement {
             '<span class="spinner-border spinner-border-sm"></span>';
         this.login = document.createElement("div");
         this.loginUrl =
-            "/auth/login.html?from=" + encodeURIComponent(location.pathname);
+            "/auth/login.html?from=" +
+            encodeURIComponent(location.pathname + location.search);
         this.login.innerHTML = `<a class="btn btn-primary" href="${this.loginUrl}">Войти</a>`;
     }
 
@@ -105,12 +106,12 @@ export class AuthHeader extends HTMLElement {
                     );
                 } else {
                     this.replaceChildren(this.login);
-                    location.assign(this.loginUrl)
+                    location.assign(this.loginUrl);
                 }
             })
             .catch((err) => {
                 this.replaceChildren(this.login);
-                location.assign(this.loginUrl)
+                location.assign(this.loginUrl);
             });
     }
 }
