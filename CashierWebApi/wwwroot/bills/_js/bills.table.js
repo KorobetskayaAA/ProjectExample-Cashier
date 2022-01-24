@@ -1,4 +1,5 @@
 import api from "/utils/api.js";
+import { createRublesFormat } from "/utils/format.js";
 import "/components/alert/alert.js";
 import "/components/tables/th.sortable.js";
 
@@ -22,11 +23,7 @@ function cancelBillRequest(billNumber) {
 
 const rowTemplate = document.querySelector("#row-template");
 const table = document.querySelector("#bills-table");
-const costFormat = Intl.NumberFormat("RU", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-    useGrouping: true,
-});
+const costFormat = createRublesFormat(false);
 const createdHeader = table.tHead.querySelector('th[name="created-header"]');
 const costHeader = table.tHead.querySelector('th[name="cost-header"]');
 const statusHeader = table.tHead.querySelector('th[name="status-header"]');
