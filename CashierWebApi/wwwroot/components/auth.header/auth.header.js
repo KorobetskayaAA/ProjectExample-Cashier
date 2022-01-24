@@ -1,4 +1,4 @@
-import api from "../../utils/api.js";
+import api from "/utils/api.js";
 
 function logoutRequest() {
     return api.post("account/logout");
@@ -66,9 +66,9 @@ export class AuthHeader extends HTMLElement {
         this.loading.innerHTML =
             '<span class="spinner-border spinner-border-sm"></span>';
         this.login = document.createElement("div");
-        const loginUrl =
+        this.loginUrl =
             "/auth/login.html?from=" + encodeURIComponent(location.pathname);
-        this.login.innerHTML = `<a class="btn btn-primary" href="${loginUrl}">Войти</a>`;
+        this.login.innerHTML = `<a class="btn btn-primary" href="${this.loginUrl}">Войти</a>`;
     }
 
     logout() {
@@ -105,10 +105,12 @@ export class AuthHeader extends HTMLElement {
                     );
                 } else {
                     this.replaceChildren(this.login);
+                    location.assign(this.loginUrl)
                 }
             })
             .catch((err) => {
                 this.replaceChildren(this.login);
+                location.assign(this.loginUrl)
             });
     }
 }

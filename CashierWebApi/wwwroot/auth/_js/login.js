@@ -1,6 +1,5 @@
 import api, { HttpStatusError } from "/utils/api.js";
 import { setSubmitting, setAlert as setError } from "/utils/forms.js";
-import "/components/auth.header/auth.header.js";
 import "/components/submit.button/submit.button.js";
 import "/components/alert/alert.js";
 
