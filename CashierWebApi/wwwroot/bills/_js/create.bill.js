@@ -60,7 +60,7 @@ form["barcode"].addEventListener("change", (evt) => {
             });
     }
 });
-form["amount"].addEventListener("change", (evt) => {
+form["amount"].addEventListener("input", (evt) => {
     const amount = +evt.target.value;
     form["cost"].value = rublesFormat.format(form["price"].value * amount);
 });
