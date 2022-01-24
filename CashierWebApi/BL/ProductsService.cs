@@ -107,7 +107,7 @@ namespace CashierWebApi.BL
             var deletedProduct = await repository.DeleteAsync(barcode);
             if (deletedProduct == null)
             {
-                return (null, new KeyNotFoundException($"Товар со штрих-кодом ${barcode} не найден."));
+                return (null, new KeyNotFoundException($"Товар со штрих-кодом {barcode} не найден."));
             }
 
             try

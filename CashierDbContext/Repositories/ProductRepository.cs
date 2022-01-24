@@ -19,7 +19,7 @@ namespace CashierDB.Repositories
             if (!string.IsNullOrEmpty(search))
             {
                 products = products
-                    .Where(p => EF.Functions.Like(p.Name, $"%{search}%") 
+                    .Where(p => EF.Functions.Like(p.Name, $"%{search}%")
                             || EF.Functions.Like(p.Barcode, $"%{search}%"));
             }
             if (sortPriceAsc == true)
@@ -59,7 +59,7 @@ namespace CashierDB.Repositories
             var product = await context.Products.FindAsync(barcode);
             if (product != null)
             {
-                context.Products.Remove(product);
+                Delete(product);
             }
             return product;
         }

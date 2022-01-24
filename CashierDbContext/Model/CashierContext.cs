@@ -10,8 +10,8 @@ namespace CashierDB.Model
 {
     public class CashierContext : IdentityDbContext<UserDbDto>
     {
-        public CashierContext() : base() {}
-        public CashierContext(DbContextOptions options) : base(options) {}
+        public CashierContext() : base() { }
+        public CashierContext(DbContextOptions options) : base(options) { }
 
         public DbSet<ProductDbDto> Products { get; set; }
         public DbSet<ItemDbDto> Items { get; set; }
@@ -30,6 +30,7 @@ namespace CashierDB.Model
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new BillStatusConfiguration());
+            modelBuilder.ApplyConfiguration(new ItemConfiguration());
         }
     }
 }

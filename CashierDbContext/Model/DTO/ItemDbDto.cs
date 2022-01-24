@@ -26,8 +26,7 @@ namespace CashierDB.Model.DTO
         public long BillNumber { get; set; }
         [ForeignKey("BillNumber")]
         public BillDbDto Bill { get; set; }
-        
-        [ForeignKey("Barcode")]
+
         public ProductDbDto Product { get; set; }
     }
 }
