@@ -10,6 +10,7 @@ namespace CashierWebApi.BL.Model
     {
         public long Number { get; set; }
         public DateTime Created { get; set; }
+        public string Creator { get; set; }
         public IEnumerable<ItemApiDto> Items { get; set; }
         public BillStatusApiDto Status { get; set; }
         public decimal Cost => Items.Sum(i => i.Cost);
@@ -20,6 +21,24 @@ namespace CashierWebApi.BL.Model
         {
             Number = bill.Number;
             Created = bill.Created;
+            if (bill.Creator != null) {
+                if (string.IsNullOrWhiteSpace(bill.Creator.LastName))
+                {
+                    Creator = bill.Creator.UserName;
+                }
+                else
+                {
+                    Creator = bill.Creator.LastName + " ";
+                    if (!string.IsNullOrEmpty(bill.Creator.FirstName))
+                    {
+                        Creator += bill.Creator.FirstName.Substring(0, 1) + '.';
+                    }
+                    if (!string.IsNullOrEmpty(bill.Creator.MiddleName))
+                    {
+                        Creator += bill.Creator.MiddleName.Substring(0, 1) + '.';
+                    }
+                }
+            }
             Status = new BillStatusApiDto(bill.Status);
             Items = bill.Items.Select(i => new ItemApiDto(i));
         }

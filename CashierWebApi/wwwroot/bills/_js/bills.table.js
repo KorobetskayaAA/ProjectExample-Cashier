@@ -50,6 +50,7 @@ function fillTableRow(row, bill) {
     row.querySelector('td[name="number"]').innerHTML = bill.number;
     row.querySelector('td[name="created"]').innerHTML =
         bill.created.toLocaleString();
+    row.querySelector('td[name="creator"]').innerHTML = bill.creator;
     row.querySelector('td[name="itemsCount"]').innerHTML = bill.items.length;
     row.querySelector('td[name="cost"]').innerHTML = costFormat.format(
         bill.cost

@@ -32,6 +32,7 @@ namespace CashierDB.Repositories
             return await bills
                 .Include(b => b.Items)
                 .Include(b => b.Status)
+                .Include(b => b.Creator)
                 .ToListAsync();
         }
 
@@ -68,6 +69,7 @@ namespace CashierDB.Repositories
             return await context.Bills
                 .Include(b => b.Items)
                 .Include(b => b.Status)
+                .Include(b => b.Creator)
                 .FirstOrDefaultAsync(b => b.Number == number);
         }
 

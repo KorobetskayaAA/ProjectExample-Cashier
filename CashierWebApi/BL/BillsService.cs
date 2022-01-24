@@ -48,7 +48,7 @@ namespace CashierWebApi.BL
 
         public async Task<Exception> CreateAsync(IEnumerable<ItemApiDto> items, string userName)
         {
-            var user = await userManager.FindByIdAsync(userName);
+            var user = await userManager.FindByNameAsync(userName);
             var bill = BillApiDto.Create(items, user.Id);
             billRepository.Create(bill);
             try
