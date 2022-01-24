@@ -7,7 +7,7 @@ export function setLoading(form, loading) {
     if (loading) {
         if (!spinner) {
             spinner = document.createElement("div");
-            spinner.className = "spinner-border text-primary";
+            spinner.className = "spinner-border text-primary align-self-center";
             form.prepend(spinner);
         }
         form.classList.add("loading");
